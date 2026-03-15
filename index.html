@@ -6,98 +6,100 @@
 <title>PNG Bulletin — Papua New Guinea News</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #ffffff; --text: #1a1a1a; --muted: #54595d;
-    --brand: #003366; --action: #3366cc;
-    --border: #c8ccd1; --surface: #f8f9fa; --divider: #e0e0e0; --gold: #C9A84C;
+  :root{
+    --bg:#ffffff;--text:#1a1a1a;--muted:#54595d;
+    --brand:#003366;--action:#3366cc;
+    --border:#c8ccd1;--surface:#f8f9fa;--divider:#e0e0e0;--gold:#C9A84C;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;}
 
-  .masthead { border-bottom: 3px solid var(--brand); padding: 0 16px; }
-  .masthead-top { display: flex; align-items: center; justify-content: space-between; padding: 10px 0 8px; border-bottom: 1px solid var(--divider); font-size: 13px; color: var(--muted); flex-wrap: wrap; gap: 6px; }
-  .badges { display: flex; gap: 6px; }
-  .badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 3px; letter-spacing: 0.04em; text-transform: uppercase; }
-  .badge-ai  { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-  .badge-rss { background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
-  .masthead-title { text-align: center; padding: 14px 0 10px; }
-  .masthead-title h1 { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; color: var(--brand); letter-spacing: -2px; line-height: 1; }
-  .masthead-title h1 span { color: var(--gold); }
-  .tagline { font-size: 11px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px; }
+  /* MASTHEAD */
+  .masthead{border-bottom:3px solid var(--brand);padding:0 16px;}
+  .masthead-top{display:flex;align-items:center;justify-content:space-between;padding:10px 0 8px;border-bottom:1px solid var(--divider);font-size:13px;color:var(--muted);}
+  .badge{font-size:11px;font-weight:600;padding:2px 10px;border-radius:3px;letter-spacing:.04em;text-transform:uppercase;background:#d4edda;color:#155724;border:1px solid #c3e6cb;}
+  .masthead-title{text-align:center;padding:14px 0 10px;}
+  .masthead-title h1{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--brand);letter-spacing:-2px;line-height:1;}
+  .masthead-title h1 span{color:var(--gold);}
+  .tagline{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:4px;}
 
-  .cat-nav { background: var(--brand); padding: 0 16px; display: flex; overflow-x: auto; scrollbar-width: none; }
-  .cat-nav::-webkit-scrollbar { display: none; }
-  .cat-btn { background: none; border: none; color: rgba(255,255,255,0.7); font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 10px 12px; cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; transition: color 0.15s, border-color 0.15s; }
-  .cat-btn:hover { color: #fff; }
-  .cat-btn.active { color: #fff; border-bottom-color: var(--gold); }
+  /* MAIN NAV */
+  .cat-nav{background:var(--brand);padding:0 16px;display:flex;overflow-x:auto;scrollbar-width:none;}
+  .cat-nav::-webkit-scrollbar{display:none;}
+  .cat-btn{background:none;border:none;color:rgba(255,255,255,.7);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:10px 12px;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;}
+  .cat-btn:hover{color:#fff;}
+  .cat-btn.active{color:#fff;border-bottom-color:var(--gold);}
 
-  .main-feed { padding: 16px; max-width: 760px; margin: 0 auto; }
-  .feed-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--brand); }
-  .feed-header h2 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--brand); }
-  .feed-controls { display: flex; gap: 8px; align-items: center; }
-  .src-count { font-size: 11px; color: var(--muted); }
-  .refresh-btn { background: none; border: 1px solid var(--action); color: var(--action); font-size: 12px; font-family: 'Inter', sans-serif; padding: 5px 12px; border-radius: 4px; cursor: pointer; }
-  .refresh-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  /* REGION CARDS */
+  .region-strip{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;}
+  .region-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 12px;cursor:pointer;transition:all .15s;text-align:center;}
+  .region-card:hover,.region-card.active{background:var(--brand);border-color:var(--brand);}
+  .region-card:hover .rc-name,.region-card.active .rc-name{color:#fff;}
+  .region-card:hover .rc-provs,.region-card.active .rc-provs{color:rgba(255,255,255,.7);}
+  .rc-icon{font-size:20px;margin-bottom:2px;}
+  .rc-name{font-size:13px;font-weight:700;color:var(--brand);line-height:1.2;}
+  .rc-provs{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3;}
 
-  .search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
-  .search-input { flex: 1; border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; font-size: 14px; font-family: 'Inter', sans-serif; outline: none; }
-  .search-input:focus { border-color: var(--action); }
-  .search-btn { background: var(--action); color: #fff; border: none; border-radius: 4px; padding: 8px 16px; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; font-weight: 600; }
+  /* FEED */
+  .main-feed{padding:16px;max-width:760px;margin:0 auto;}
+  .feed-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--brand);}
+  .feed-header h2{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--brand);}
+  .feed-controls{display:flex;gap:8px;align-items:center;}
+  .src-count{font-size:11px;color:var(--muted);}
+  .refresh-btn{background:none;border:1px solid var(--action);color:var(--action);font-size:12px;font-family:'Inter',sans-serif;padding:5px 12px;border-radius:4px;cursor:pointer;}
+  .refresh-btn:disabled{opacity:.4;cursor:not-allowed;}
 
-  /* CARDS */
-  .article-card { border-bottom: 1px solid var(--divider); padding: 18px 0; cursor: pointer; }
-  .article-card:active { background: var(--surface); }
-  .card-inner { display: grid; grid-template-columns: 1fr 100px; gap: 12px; }
-  .article-card.featured .card-inner { grid-template-columns: 1fr; }
+  .search-bar{display:flex;gap:8px;margin-bottom:16px;}
+  .search-input{flex:1;border:1px solid var(--border);border-radius:4px;padding:8px 12px;font-size:14px;font-family:'Inter',sans-serif;outline:none;}
+  .search-input:focus{border-color:var(--action);}
+  .search-btn{background:var(--action);color:#fff;border:none;border-radius:4px;padding:8px 16px;font-size:13px;font-family:'Inter',sans-serif;cursor:pointer;font-weight:600;}
 
-  .src-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 4px; }
-  .src-pill.ai { color: #155724; } .src-pill.rss { color: #856404; }
-  .src-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .ai .src-dot { background: #28a745; } .rss .src-dot { background: #ffc107; }
+  /* ARTICLE CARDS */
+  .article-card{border-bottom:1px solid var(--divider);padding:18px 0;cursor:pointer;}
+  .article-card:active{background:var(--surface);}
+  .card-row{display:grid;grid-template-columns:1fr 100px;gap:12px;}
+  .article-card.featured .card-row{grid-template-columns:1fr;}
 
-  .art-cat { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--action); margin-bottom: 3px; }
-  .art-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 6px; }
-  .article-card.featured .art-title { font-size: 24px; }
-  .art-summary { font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .art-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
-  .art-meta .sep { opacity: 0.3; }
-  .art-src { font-weight: 600; color: var(--brand); }
+  /* REGION BADGE ON CARD */
+  .region-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;padding:2px 8px;border-radius:3px;}
+  .rb-momase{background:#fff3cd;color:#856404;}
+  .rb-highlands{background:#d1ecf1;color:#0c5460;}
+  .rb-islands{background:#f8d7da;color:#721c24;}
+  .rb-southern{background:#d4edda;color:#155724;}
+  .rb-national{background:#e8f0fe;color:var(--action);}
 
-  .thumb { width: 100px; height: 70px; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; align-self: center; flex-shrink: 0; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 24px; }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .feat-img { width: 100%; height: 200px; object-fit: cover; border-radius: 3px; margin-top: 10px; border: 1px solid var(--border); display: block; }
+  .art-cat{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--action);margin-bottom:3px;}
+  .art-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:6px;}
+  .article-card.featured .art-title{font-size:24px;}
+  .art-summary{font-size:14px;color:var(--muted);line-height:1.5;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+  .art-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap;}
+  .art-meta .sep{opacity:.3;}
+  .art-src{font-weight:600;color:var(--brand);}
+
+  .thumb{width:100px;height:70px;border:1px solid var(--border);border-radius:3px;overflow:hidden;align-self:center;flex-shrink:0;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:24px;}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .feat-img{width:100%;height:200px;object-fit:cover;border-radius:3px;margin-top:10px;border:1px solid var(--border);display:block;}
 
   /* DETAIL */
-  .detail-view { display: none; }
-  .detail-view.on { display: block; }
-  .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--action); cursor: pointer; margin-bottom: 18px; background: none; border: none; padding: 0; font-family: 'Inter', sans-serif; }
-  .d-cat { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--action); margin-bottom: 8px; }
-  .d-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; }
-  .d-meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); padding: 10px 0; border-top: 1px solid var(--divider); border-bottom: 1px solid var(--divider); margin-bottom: 18px; }
-  .d-img { width: 100%; max-height: 280px; object-fit: cover; border-radius: 3px; margin-bottom: 18px; border: 1px solid var(--border); display: block; }
-  .d-body { font-family: 'Source Serif 4', Georgia, serif; font-size: 16px; line-height: 1.8; }
-  .d-body p { margin-bottom: 16px; }
-  .infobox { background: var(--surface); border: 1px solid var(--border); padding: 14px; margin: 18px 0; border-radius: 2px; }
-  .infobox h4 { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-  .infobox table { width: 100%; border-collapse: collapse; }
-  .infobox td { font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--divider); vertical-align: top; }
-  .infobox td:first-child { color: var(--muted); width: 38%; }
-  .read-more { display: inline-block; margin-top: 14px; font-size: 13px; color: var(--action); text-decoration: none; }
+  .detail-view{display:none;}
+  .detail-view.on{display:block;}
+  .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--action);cursor:pointer;margin-bottom:18px;background:none;border:none;padding:0;font-family:'Inter',sans-serif;}
+  .d-cat{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--action);margin-bottom:8px;}
+  .d-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;line-height:1.2;margin-bottom:12px;}
+  .d-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding:10px 0;border-top:1px solid var(--divider);border-bottom:1px solid var(--divider);margin-bottom:18px;}
+  .d-img{width:100%;max-height:260px;object-fit:cover;border-radius:3px;margin-bottom:18px;border:1px solid var(--border);display:block;}
+  .d-body{font-family:'Source Serif 4',Georgia,serif;font-size:16px;line-height:1.8;}
+  .d-body p{margin-bottom:16px;}
+  .infobox{background:var(--surface);border:1px solid var(--border);padding:14px;margin:18px 0;border-radius:2px;}
+  .infobox h4{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .infobox table{width:100%;border-collapse:collapse;}
+  .infobox td{font-size:13px;padding:5px 0;border-bottom:1px solid var(--divider);vertical-align:top;}
+  .infobox td:first-child{color:var(--muted);width:38%;}
+  .read-more{display:inline-block;margin-top:14px;font-size:13px;color:var(--action);text-decoration:none;}
 
-  /* LOADER */
-  .loader { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--muted); gap: 14px; font-size: 14px; text-align: center; }
-  .spinner { width: 30px; height: 30px; border: 3px solid var(--divider); border-top-color: var(--action); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  .loader-steps { display: flex; flex-direction: column; gap: 8px; font-size: 13px; text-align: left; min-width: 220px; }
-  .step { color: var(--muted); padding: 4px 0; }
-  .step.active { color: var(--brand); font-weight: 600; }
-  .step.done { color: #155724; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* PROVINCE PILLS */
-  .province-row { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0; scrollbar-width: none; border-bottom: 1px solid var(--divider); margin-bottom: 4px; }
-  .province-row::-webkit-scrollbar { display: none; }
-  .prov-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 12px; font-family: 'Inter', sans-serif; padding: 5px 12px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: all 0.12s; }
-  .prov-btn:hover, .prov-btn.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .loader{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:var(--muted);gap:14px;font-size:14px;text-align:center;}
+  .spinner{width:30px;height:30px;border:3px solid var(--divider);border-top-color:var(--action);border-radius:50%;animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
@@ -105,10 +107,7 @@
 <header class="masthead">
   <div class="masthead-top">
     <span id="today-date"></span>
-    <div class="badges">
-      <span class="badge badge-ai">AI Powered</span>
-      <span class="badge badge-rss">+ RSS Live</span>
-    </div>
+    <span class="badge">AI Powered</span>
   </div>
   <div class="masthead-title">
     <h1>PNG <span>Bulletin</span></h1>
@@ -117,41 +116,53 @@
 </header>
 
 <nav class="cat-nav">
-  <button class="cat-btn active" data-q="Papua New Guinea latest news" data-l="Top Stories">Top Stories</button>
-  <button class="cat-btn" data-q="Papua New Guinea parliament politics government" data-l="Politics">Politics</button>
-  <button class="cat-btn" data-q="Papua New Guinea economy kina trade business" data-l="Economy">Economy</button>
-  <button class="cat-btn" data-q="Papua New Guinea health medical hospitals" data-l="Health">Health</button>
-  <button class="cat-btn" data-q="Papua New Guinea education schools UPNG" data-l="Education">Education</button>
-  <button class="cat-btn" data-q="Papua New Guinea sport SP Hunters Kumuls rugby" data-l="Sports">Sports</button>
-  <button class="cat-btn" data-q="Papua New Guinea environment logging climate forest" data-l="Environment">Environment</button>
-  <button class="cat-btn" data-q="Papua New Guinea mining Porgera Ok Tedi gold" data-l="Mining">Mining</button>
-  <button class="cat-btn" data-q="Pacific Islands PNG Melanesia regional" data-l="Pacific">Pacific</button>
+  <button class="cat-btn active" data-q="national" data-l="National">🇵🇬 National</button>
+  <button class="cat-btn" data-q="politics" data-l="Politics">Politics</button>
+  <button class="cat-btn" data-q="economy" data-l="Economy">Economy</button>
+  <button class="cat-btn" data-q="health" data-l="Health">Health</button>
+  <button class="cat-btn" data-q="education" data-l="Education">Education</button>
+  <button class="cat-btn" data-q="sports" data-l="Sports">Sports</button>
+  <button class="cat-btn" data-q="environment" data-l="Environment">Environment</button>
+  <button class="cat-btn" data-q="mining" data-l="Mining">Mining</button>
 </nav>
 
 <div class="main-feed">
   <div id="feed-view">
+
     <div class="feed-header">
-      <h2 id="feed-title">Top Stories</h2>
+      <h2 id="feed-title">National</h2>
       <div class="feed-controls">
         <span class="src-count" id="src-count"></span>
         <button class="refresh-btn" id="refresh-btn" onclick="loadAll()">↻ Refresh</button>
       </div>
     </div>
 
-    <!-- Province quick filters -->
-    <div class="province-row">
-      <button class="prov-btn" data-q="East Sepik Wewak Papua New Guinea news" data-l="East Sepik">📍 East Sepik</button>
-      <button class="prov-btn" data-q="Port Moresby NCD Papua New Guinea news" data-l="Port Moresby">📍 Port Moresby</button>
-      <button class="prov-btn" data-q="Morobe Lae Papua New Guinea news" data-l="Morobe">📍 Morobe</button>
-      <button class="prov-btn" data-q="Western Highlands Mt Hagen PNG news" data-l="W. Highlands">📍 W. Highlands</button>
-      <button class="prov-btn" data-q="Bougainville ABG PNG news" data-l="Bougainville">📍 Bougainville</button>
-      <button class="prov-btn" data-q="Madang Papua New Guinea news" data-l="Madang">📍 Madang</button>
-      <button class="prov-btn" data-q="Manus Papua New Guinea news" data-l="Manus">📍 Manus</button>
-      <button class="prov-btn" data-q="New Ireland Kavieng Papua New Guinea news" data-l="New Ireland">📍 New Ireland</button>
+    <!-- 4 REGION CARDS -->
+    <div class="region-strip">
+      <div class="region-card" id="rc-momase" onclick="loadRegion('momase')">
+        <div class="rc-icon">🌊</div>
+        <div class="rc-name">Momase</div>
+        <div class="rc-provs">Madang · Morobe · East Sepik · West Sepik</div>
+      </div>
+      <div class="region-card" id="rc-highlands" onclick="loadRegion('highlands')">
+        <div class="rc-icon">⛰️</div>
+        <div class="rc-name">Highlands</div>
+        <div class="rc-provs">WHP · EHP · Simbu · Hela · SHP · Jiwaka</div>
+      </div>
+      <div class="region-card" id="rc-islands" onclick="loadRegion('islands')">
+        <div class="rc-icon">🏝️</div>
+        <div class="rc-name">NG Islands</div>
+        <div class="rc-provs">ENB · WNB · New Ireland · Manus · Bougainville</div>
+      </div>
+      <div class="region-card" id="rc-southern" onclick="loadRegion('southern')">
+        <div class="rc-icon">🏙️</div>
+        <div class="rc-name">Southern</div>
+        <div class="rc-provs">NCD · Central · Gulf · Western · Milne Bay · Oro</div>
+      </div>
     </div>
 
-    <div class="search-bar" style="margin-top:14px;">
-      <input class="search-input" id="search-input" type="text" placeholder="Search PNG news…" />
+    <div class="search-bar">
+      <input class="search-input" id="search-input" type="text" placeholder="Search PNG news…"/>
       <button class="search-btn" onclick="doSearch()">Search</button>
     </div>
 
@@ -167,160 +178,195 @@
 </div>
 
 <script>
-const RSS_FEEDS = [
-  { name: 'RNZ Pacific',  url: 'https://www.rnz.co.nz/rss/pacific.xml' },
-  { name: 'Loop PNG',     url: 'https://www.looppng.com/rss.xml' },
-  { name: 'Post-Courier', url: 'https://www.postcourier.com.pg/feed/' },
-  { name: 'ABC Pacific',  url: 'https://www.abc.net.au/pacific/feed/rss.xml' },
-];
+// ── REGION DEFINITIONS ──
+const REGIONS = {
+  momase: {
+    label: 'Momase Region',
+    badge: 'rb-momase',
+    cities: ['Madang', 'Lae', 'Wewak', 'Vanimo'],
+    provinces: ['Madang', 'Morobe', 'East Sepik', 'West Sepik'],
+    prompt: 'Madang, Lae Morobe, Wewak East Sepik, Vanimo West Sepik'
+  },
+  highlands: {
+    label: 'Highlands Region',
+    badge: 'rb-highlands',
+    cities: ['Mt Hagen', 'Goroka', 'Mendi', 'Kundiawa'],
+    provinces: ['Western Highlands', 'Eastern Highlands', 'Southern Highlands', 'Simbu'],
+    prompt: 'Mt Hagen Western Highlands, Goroka Eastern Highlands, Mendi Southern Highlands, Kundiawa Simbu'
+  },
+  islands: {
+    label: 'New Guinea Islands',
+    badge: 'rb-islands',
+    cities: ['Kokopo', 'Kimbe', 'Kavieng', 'Lorengau', 'Arawa'],
+    provinces: ['East New Britain', 'West New Britain', 'New Ireland', 'Manus', 'Bougainville'],
+    prompt: 'Kokopo East New Britain, Kimbe West New Britain, Kavieng New Ireland, Buka Bougainville'
+  },
+  southern: {
+    label: 'Southern Region',
+    badge: 'rb-southern',
+    cities: ['Port Moresby', 'Alotau', 'Kerema', 'Popondetta'],
+    provinces: ['NCD', 'Central', 'Gulf', 'Milne Bay', 'Oro', 'Western'],
+    prompt: 'Port Moresby NCD, Alotau Milne Bay, Popondetta Oro, Kerema Gulf'
+  }
+};
 
-// Keywords that confirm an article is PNG-specific
-const PNG_KEYWORDS = [
-  'papua','papua new guinea','p.n.g','p.n.g.','png',
-  'port moresby','lae','wewak','madang','kokopo','arawa','buka','kimbe','mendi','goroka','mt hagen','mount hagen',
-  'morobe','east sepik','west sepik','western highlands','eastern highlands','bougainville','manus','milne bay',
-  'new ireland','west new britain','east new britain','gulf province','southern highlands','hela','jiwaka','sandaun',
-  'marape','james marape','peter o\'neill','o\'neill','pangu','ncd','upng','bank of png','bsp bank',
-  'sp hunters','kumuls','pngdf','icc','national parliament','waigani',
-  'kina','toea','pngx','ntt','ok tedi','porgera','lihir','ramu','highlands highway',
-  'melanesia','melanesian'
-];
-
-function isPNG(text) {
-  const t = text.toLowerCase();
-  return PNG_KEYWORDS.some(k => t.includes(k));
-}
+// ── TOPIC → AI CONTEXT ──
+const TOPIC_CONTEXT = {
+  national: 'top stories from across Papua New Guinea today',
+  politics: 'Papua New Guinea parliament, government, James Marape, elections, policy',
+  economy: 'Papua New Guinea economy, kina exchange rate, BSP bank, trade, investment',
+  health: 'Papua New Guinea health system, hospitals, disease outbreaks, public health',
+  education: 'Papua New Guinea education, UPNG, schools, teachers, literacy',
+  sports: 'SP Hunters, PNG Kumuls, rugby league, athletics, PNG sport',
+  environment: 'Papua New Guinea environment, logging, climate change, conservation, forests',
+  mining: 'Papua New Guinea mining, Porgera, Ok Tedi, Lihir Gold, PNG LNG, Barrick',
+};
 
 const IMG_KEYS = {
-  'Politics':'parliament+government','Economy':'market+business','Health':'hospital+medical',
-  'Education':'school+students','Sports':'rugby+sport','Environment':'rainforest+jungle',
-  'Mining':'mining+gold','Pacific':'ocean+pacific+island','Top Stories':'papua+guinea+tropical',
-  'News':'tropical+village+pacific'
+  national:'papua+guinea+tropical',politics:'parliament+government',
+  economy:'market+port+business',health:'hospital+clinic',
+  education:'school+students',sports:'rugby+stadium',
+  environment:'rainforest+jungle',mining:'mining+gold',
+  momase:'ocean+port+tropical',highlands:'mountains+highlands+valley',
+  islands:'island+ocean+coast',southern:'city+port+moresby',
 };
 
 let arts = [];
-let curQ = 'Papua New Guinea latest news';
-let curL = 'Top Stories';
+let curQ = 'national';
+let curL = 'National';
+let curMode = 'topic'; // 'topic' or 'region'
 
 document.getElementById('today-date').textContent = new Date().toLocaleDateString('en-PG',{
-  weekday:'long', year:'numeric', month:'long', day:'numeric'
+  weekday:'long',year:'numeric',month:'long',day:'numeric'
 });
 
-// Category nav
+// Topic nav
 document.querySelectorAll('.cat-btn').forEach(b => {
   b.addEventListener('click', () => {
-    curQ = b.dataset.q; curL = b.dataset.l;
-    document.querySelectorAll('.cat-btn').forEach(x => x.classList.toggle('active', x===b));
-    document.querySelectorAll('.prov-btn').forEach(x => x.classList.remove('active'));
-    document.getElementById('feed-title').textContent = curL;
+    curQ=b.dataset.q; curL=b.dataset.l; curMode='topic';
+    document.querySelectorAll('.cat-btn').forEach(x=>x.classList.toggle('active',x===b));
+    document.querySelectorAll('.region-card').forEach(x=>x.classList.remove('active'));
+    document.getElementById('feed-title').textContent=curL;
     goBack(); loadAll();
   });
 });
 
-// Province pills
-document.querySelectorAll('.prov-btn').forEach(b => {
-  b.addEventListener('click', () => {
-    curQ = b.dataset.q; curL = b.dataset.l;
-    document.querySelectorAll('.prov-btn').forEach(x => x.classList.toggle('active', x===b));
-    document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
-    document.getElementById('feed-title').textContent = curL;
-    goBack(); loadAll();
-  });
-});
-
-function doSearch() {
-  const q = document.getElementById('search-input').value.trim();
-  if (!q) return;
-  curQ = q + ' Papua New Guinea'; curL = 'Search: "' + q + '"';
-  document.getElementById('feed-title').textContent = curL;
-  document.querySelectorAll('.cat-btn,.prov-btn').forEach(x => x.classList.remove('active'));
+// Region cards
+function loadRegion(key) {
+  curQ=key; curL=REGIONS[key].label; curMode='region';
+  document.querySelectorAll('.region-card').forEach(x=>x.classList.remove('active'));
+  document.getElementById('rc-'+key).classList.add('active');
+  document.querySelectorAll('.cat-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('feed-title').textContent=curL;
   goBack(); loadAll();
 }
-document.getElementById('search-input').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
 
-// ── LOADER UI ──
-const STEPS = ['Generating AI news articles…','Fetching live RSS feeds…','Combining & filtering for PNG…'];
-function showLoader() {
-  document.getElementById('feed-container').innerHTML =
-    '<div class="loader"><div class="spinner"></div><div class="loader-steps">' +
-    STEPS.map((s,i) => `<div class="step ${i===0?'active':''}" id="step${i}">⏳ ${s}</div>`).join('') +
-    '</div></div>';
+function doSearch(){
+  const q=document.getElementById('search-input').value.trim();
+  if(!q) return;
+  curQ='search:'+q; curL='Search: "'+q+'"'; curMode='search';
+  document.getElementById('feed-title').textContent=curL;
+  document.querySelectorAll('.cat-btn,.region-card').forEach(x=>x.classList.remove('active'));
+  goBack(); loadAll();
 }
-function stepDone(i) {
-  const el = document.getElementById('step'+i);
-  if(el){el.className='step done';el.textContent='✓ '+STEPS[i].replace('…','');}
-  const nx = document.getElementById('step'+(i+1));
-  if(nx) nx.className='step active';
+document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+
+// ── BUILD AI PROMPT ──
+function buildPrompt(q, mode) {
+  const today = '15 March 2026';
+
+  if (mode === 'region') {
+    const r = REGIONS[q];
+    return `You are the editor of PNG Bulletin. Write exactly 4 news articles — ONE for each of these PNG cities: ${r.cities.join(', ')}.
+
+Each article must be set in its specific city. Date: ${today}.
+
+JSON only, no markdown:
+{"a":[{"h":"headline","c":"category","s":"2-sentence summary","b":"P1.\\n\\nP2.\\n\\nP3.\\n\\nP4.","l":"City, Province PNG","d":"${today}","e":"emoji","k":[{"label":"Region","value":"${r.label}"},{"label":"Province","value":"..."},{"label":"Source","value":"Post-Courier or Loop PNG"},{"label":"Status","value":"..."}]}]}
+
+Rules: Each article MUST name the specific city. Use real PNG institutions. 4 different topics across the 4 cities. Be specific and journalistic.`;
+  }
+
+  if (mode === 'search') {
+    const topic = q.replace('search:','');
+    return `PNG Bulletin editor. Write 4 PNG news articles about: "${topic}" in Papua New Guinea. Date: ${today}.
+
+JSON only:
+{"a":[{"h":"headline","c":"category","s":"2-sentence summary","b":"P1.\\n\\nP2.\\n\\nP3.\\n\\nP4.","l":"City, Province PNG","d":"${today}","e":"emoji","k":[{"label":"Region","value":"..."},{"label":"Source","value":"..."},{"label":"Status","value":"..."}]}]}
+
+Use real PNG places and institutions. 4 different angles.`;
+  }
+
+  // Topic mode
+  const ctx = TOPIC_CONTEXT[q] || q;
+  return `PNG Bulletin editor. Write 4 PNG news articles about: ${ctx}. Date: ${today}.
+
+JSON only, no markdown:
+{"a":[{"h":"headline","c":"category","s":"2-sentence summary","b":"P1.\\n\\nP2.\\n\\nP3.\\n\\nP4.","l":"City, Province PNG","d":"${today}","e":"emoji","k":[{"label":"Region","value":"..."},{"label":"Source","value":"Post-Courier or Loop PNG or RNZ Pacific"},{"label":"Status","value":"..."},{"label":"Impact","value":"..."}]}]}
+
+Use real PNG refs: Port Moresby, Lae, Wewak, Mt Hagen, Goroka, Kokopo. Institutions: Parliament, UPNG, BSP, Bank of PNG, SP Hunters, Kumuls, Ok Tedi, Porgera, PNG LNG. People: James Marape, Gary Juffa, Allan Bird, Justin Tkatchenko. 4 different stories.`;
 }
 
-// ── AI FETCH ──
-async function fetchAI(q, l, count) {
-  const prompt = `You are the editor of PNG Bulletin, Papua New Guinea's leading newspaper. Today is 15 March 2026.
-
-Generate ${count} realistic, specific PNG news articles about: ${l}
-Topic context: ${q}
-
-Return ONLY valid JSON — no markdown, no backticks, nothing else before or after:
-{"articles":[{"h":"headline under 12 words","c":"category","s":"2-sentence summary with specific details","b":"Para1 text.\\n\\nPara2 text.\\n\\nPara3 text.\\n\\nPara4 text.\\n\\nPara5 text.","l":"City, Province, PNG","d":"15 March 2026","e":"single emoji","k":[{"label":"Region","value":"..."},{"label":"Source","value":"e.g. Post-Courier"},{"label":"Status","value":"..."},{"label":"Impact","value":"..."}]}]}
-
-STRICT RULES — every article MUST:
-- Be specifically about Papua New Guinea, not other Pacific nations
-- Reference real PNG places: Port Moresby, Lae, Wewak, Mt Hagen, Kokopo, Goroka, Kimbe, Mendi, Arawa, Buka, Madang, Kavieng
-- Reference real PNG institutions: National Parliament Waigani, UPNG, Bank of PNG, BSP Bank, PNG LNG, Ok Tedi Mine, Porgera Mine, Lihir Gold, SP Hunters, Kumuls, Post-Courier, The National, RNZ Pacific, Loop PNG, PNGDF, NCD
-- Reference real PNG figures: James Marape (PM), Justin Tkatchenko, Ian Ling-Stuckey, Gary Juffa, Allan Bird
-- Each article must have a different angle and topic
-- Body must be exactly 5 paragraphs separated by \\n\\n
-- Be journalistic and specific — no vague generalities`;
-
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:4000, messages:[{role:'user',content:prompt}] })
+// ── FETCH AI ──
+async function fetchAI(){
+  const prompt = buildPrompt(curQ, curMode);
+  const imgKey = IMG_KEYS[curQ] || IMG_KEYS['national'];
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2200,messages:[{role:'user',content:prompt}]})
     });
-    if(!r.ok) throw new Error('API error '+r.status);
-    const d = await r.json();
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d=await r.json();
     if(d.error) throw new Error(d.error.message);
-    const txt = d.content.map(b=>b.text||'').join('');
-    const j = txt.slice(txt.indexOf('{'), txt.lastIndexOf('}')+1);
-    const parsed = JSON.parse(j);
-    const kw = IMG_KEYS[l] || IMG_KEYS['News'];
-    return (parsed.articles||[]).map((a,i)=>({
-      id:'ai'+i, src:'ai', name:'PNG Bulletin',
-      headline:a.h, summary:a.s, url:null,
-      image:`https://source.unsplash.com/400x260/?${kw}&sig=${i+Math.floor(Date.now()/10000)}`,
-      date:a.d, cat:a.c, body:a.b, loc:a.l, icon:a.e||'📰', facts:a.k||[]
+    const txt=d.content.map(b=>b.text||'').join('');
+    const j=txt.slice(txt.indexOf('{'),txt.lastIndexOf('}')+1);
+    const p=JSON.parse(j);
+    const badge = curMode==='region' ? REGIONS[curQ]?.badge || 'rb-national' : 'rb-national';
+    return (p.a||[]).map((a,i)=>({
+      id:'ai'+i,src:'ai',name:'PNG Bulletin',badge,
+      headline:a.h,summary:a.s,url:null,
+      image:`https://source.unsplash.com/400x260/?${imgKey}&sig=${i+Math.floor(Date.now()/10000)}`,
+      date:a.d,cat:a.c,body:a.b,loc:a.l,icon:a.e||'📰',facts:a.k||[]
     }));
-  } catch(e){ console.error('AI error:',e); return []; }
+  }catch(e){console.error('AI:',e);return[];}
 }
 
-// ── RSS FETCH ──
-async function fetchRSS() {
-  const out = [];
-  await Promise.allSettled(RSS_FEEDS.map(async f => {
-    try {
-      const r = await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(f.url),{signal:AbortSignal.timeout(8000)});
-      if(!r.ok) return;
-      const d = await r.json();
-      const xml = new DOMParser().parseFromString(d.contents,'text/xml');
-      Array.from(xml.querySelectorAll('item')).slice(0,8).forEach((n,i)=>{
-        const title = n.querySelector('title')?.textContent?.trim()||'';
-        const raw   = n.querySelector('description')?.textContent||'';
-        const desc  = raw.replace(/<[^>]+>/g,'').trim();
-        const link  = n.querySelector('link')?.textContent?.trim()||'';
-        const pub   = n.querySelector('pubDate')?.textContent||'';
-        const enc   = n.querySelector('enclosure');
-        const mc    = n.querySelector('content');
-        const imgM  = raw.match(/src=["']([^"']+\.(jpg|jpeg|png|webp))/i);
-        const img   = enc?.getAttribute('url')||mc?.getAttribute('url')||(imgM?imgM[1]:'')||'';
-        if(!title||title.length<5) return;
-        // STRICT PNG filter — must mention PNG
-        if(!isPNG(title+' '+desc)) return;
+// ── FETCH RSS (PNG-headline-only filter) ──
+const RSS_FEEDS=[
+  {name:'RNZ Pacific',url:'https://www.rnz.co.nz/rss/pacific.xml'},
+  {name:'Loop PNG',url:'https://www.looppng.com/rss.xml'},
+  {name:'Post-Courier',url:'https://www.postcourier.com.pg/feed/'},
+];
+const PNG_TITLE_KW=['papua','png ','port moresby','lae ','wewak','madang','goroka','mt hagen','mount hagen',
+  'kokopo','bougainville','morobe','sepik','highlands','marape','kumuls','hunters','waigani','kina ','pngdf'];
+
+function isPNGTitle(t){const s=t.toLowerCase();return PNG_TITLE_KW.some(k=>s.includes(k));}
+
+async function fetchRSS(){
+  const out=[];
+  await Promise.allSettled(RSS_FEEDS.map(async f=>{
+    try{
+      const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(f.url),
+        {signal:AbortSignal.timeout(7000)});
+      if(!r.ok)return;
+      const d=await r.json();
+      const xml=new DOMParser().parseFromString(d.contents,'text/xml');
+      Array.from(xml.querySelectorAll('item')).slice(0,10).forEach((n,i)=>{
+        const title=n.querySelector('title')?.textContent?.trim()||'';
+        const raw=n.querySelector('description')?.textContent||'';
+        const desc=raw.replace(/<[^>]+>/g,'').trim();
+        const link=n.querySelector('link')?.textContent?.trim()||'';
+        const pub=n.querySelector('pubDate')?.textContent||'';
+        const enc=n.querySelector('enclosure');
+        const imgM=raw.match(/src=["']([^"']+\.(jpg|jpeg|png|webp))/i);
+        const img=enc?.getAttribute('url')||(imgM?imgM[1]:'')||'';
+        if(!title||title.length<5||!isPNGTitle(title))return;
         out.push({
-          id:'rss'+f.name+i, src:'rss', name:f.name,
-          headline:title, summary:desc.slice(0,280),
-          url:link, image:img,
+          id:'rss'+f.name+i,src:'rss',name:f.name,badge:'rb-national',
+          headline:title,summary:desc.slice(0,260),url:link,image:img,
           date:pub?new Date(pub).toLocaleDateString('en-PG',{day:'numeric',month:'short',year:'numeric'}):'Recent',
-          cat:'News', body:null, loc:'Papua New Guinea', icon:'📰', facts:[]
+          cat:'News',body:null,loc:'Papua New Guinea',icon:'📰',facts:[]
         });
       });
     }catch(e){}
@@ -328,32 +374,26 @@ async function fetchRSS() {
   return out;
 }
 
-// ── MAIN LOAD ──
-async function loadAll() {
-  const btn = document.getElementById('refresh-btn');
-  btn.disabled = true;
-  showLoader();
+// ── LOAD ALL ──
+async function loadAll(){
+  const btn=document.getElementById('refresh-btn');
+  btn.disabled=true;
+  document.getElementById('feed-container').innerHTML=
+    '<div class="loader"><div class="spinner"></div><span>Loading '+curL+'…</span></div>';
 
-  // AI first (always works), RSS in parallel
-  const [aiArts, rssArts] = await Promise.all([
-    fetchAI(curQ, curL, 7),
-    fetchRSS()
-  ]);
-  stepDone(0); stepDone(1); stepDone(2);
-
-  // Merge: AI articles first (guaranteed PNG), then PNG-filtered RSS
-  arts = [...aiArts, ...rssArts].filter(a=>a.headline&&a.headline.length>4);
+  const [aiArts,rssArts]=await Promise.all([fetchAI(),fetchRSS()]);
+  arts=[...aiArts,...rssArts].filter(a=>a.headline&&a.headline.length>4);
 
   if(!arts.length){
     document.getElementById('feed-container').innerHTML=
-      '<div class="loader" style="color:#c00;">⚠️ Could not load articles.<br><br><button class="refresh-btn" style="opacity:1;cursor:pointer;" onclick="loadAll()">Try Again</button></div>';
-    btn.disabled=false; return;
+      '<div class="loader" style="color:#c00;">⚠️ No articles loaded.<br><br>'+
+      '<button class="refresh-btn" style="opacity:1;cursor:pointer;margin-top:8px" onclick="loadAll()">Try Again</button></div>';
+    btn.disabled=false;return;
   }
 
   const ac=arts.filter(a=>a.src==='ai').length;
   const rc=arts.filter(a=>a.src==='rss').length;
-  document.getElementById('src-count').textContent=ac+' AI · '+rc+' RSS';
-
+  document.getElementById('src-count').textContent=ac+' AI'+(rc?' · '+rc+' RSS':'');
   renderFeed(arts);
   btn.disabled=false;
 }
@@ -363,8 +403,6 @@ function renderFeed(list){
   document.getElementById('feed-container').innerHTML=list.map((a,i)=>{
     const isFeat=i===0;
     const hasImg=a.image&&a.image.startsWith('http');
-    const srcLbl=a.src==='rss'?'RSS Live':'AI Report';
-
     let media='';
     if(isFeat&&hasImg){
       media=`<img src="${a.image}" class="feat-img" loading="lazy" onerror="this.style.display='none'">`;
@@ -373,18 +411,17 @@ function renderFeed(list){
     }else if(!isFeat){
       media=`<div class="thumb">${a.icon}</div>`;
     }
-
     return `<div class="article-card${isFeat?' featured':''}" onclick="showDetail(${i})">
-      <div class="card-inner">
+      <div class="card-row">
         <div>
-          <div class="src-pill ${a.src}"><span class="src-dot"></span>${srcLbl} · ${a.name}</div>
+          <span class="region-badge ${a.badge||'rb-national'}">${a.src==='rss'?'🔴 RSS · '+a.name:'📍 '+a.loc}</span>
           <div class="art-cat">${a.cat}</div>
           <div class="art-title">${a.headline}</div>
           <div class="art-summary">${a.summary}</div>
           <div class="art-meta">
             <span>📅 ${a.date}</span>
-            ${a.loc?`<span class="sep">·</span><span>📍 ${a.loc}</span>`:''}
-            <span class="sep">·</span><span class="art-src">${a.name}</span>
+            <span class="sep">·</span>
+            <span class="art-src">${a.name}</span>
           </div>
         </div>
         ${!isFeat?media:''}
@@ -396,8 +433,7 @@ function renderFeed(list){
 
 // ── DETAIL ──
 async function showDetail(i){
-  const a=arts[i]; if(!a) return;
-  const srcLbl=a.src==='rss'?'RSS Live':'AI Report';
+  const a=arts[i];if(!a)return;
   const hasImg=a.image&&a.image.startsWith('http');
   const facts=(a.facts||[]).map(f=>`<tr><td>${f.label}</td><td><strong>${f.value}</strong></td></tr>`).join('');
   const bodyHtml=a.body
@@ -405,45 +441,41 @@ async function showDetail(i){
     :'<div class="loader"><div class="spinner"></div><span>Writing full article…</span></div>';
 
   document.getElementById('detail-content').innerHTML=`
-    <div class="src-pill ${a.src}" style="margin-bottom:8px"><span class="src-dot"></span>${srcLbl} · ${a.name}</div>
+    <span class="region-badge ${a.badge||'rb-national'}" style="margin-bottom:10px;display:inline-block">${a.loc}</span>
     <div class="d-cat">${a.cat}</div>
     <div class="d-title">${a.headline}</div>
     <div class="d-meta">
       <span>📅 ${a.date}</span>
-      ${a.loc?`<span>📍 ${a.loc}</span>`:''}
+      <span>📍 ${a.loc}</span>
       <span>📡 ${a.name}</span>
     </div>
     ${hasImg?`<img class="d-img" src="${a.image}" loading="lazy" onerror="this.style.display='none'">`:''}
     ${facts?`<div class="infobox"><h4>Key Facts</h4><table>${facts}</table></div>`:''}
     <div class="d-body" id="dbody">${bodyHtml}</div>
-    ${a.url?`<a class="read-more" href="${a.url}" target="_blank" rel="noopener">→ Read full article at ${a.name}</a>`:''}
-  `;
+    ${a.url?`<a class="read-more" href="${a.url}" target="_blank" rel="noopener">→ Read full article at ${a.name}</a>`:''}`;
 
   document.getElementById('feed-view').style.display='none';
   document.getElementById('detail-view').classList.add('on');
   window.scrollTo(0,0);
-  if(!a.body) expandAI(a,i);
+  if(!a.body)expandAI(a,i);
 }
 
-// ── AI EXPAND ──
 async function expandAI(a,i){
   const el=document.getElementById('dbody');
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:1400,
-        messages:[{role:'user',content:`Write a full 5-paragraph Papua New Guinea newspaper article.\n\nHeadline: ${a.headline}\nSummary: ${a.summary}\nSource: ${a.name}\n\nJournalistic style. Reference real PNG places, institutions, and context. 5 paragraphs separated by blank lines. No headline, no JSON.`}]
+        model:'claude-sonnet-4-20250514',max_tokens:900,
+        messages:[{role:'user',content:`Write a 4-paragraph PNG newspaper article.\nHeadline: ${a.headline}\nCity: ${a.loc}\nSummary: ${a.summary}\nReal PNG context. Paragraphs separated by blank lines. No headline, no JSON.`}]
       })
     });
     const d=await r.json();
     const txt=d.content.map(b=>b.text||'').join('');
     arts[i].body=txt;
     const html=txt.split(/\n\n+/).filter(p=>p.trim()).map(p=>`<p>${p.trim()}</p>`).join('');
-    if(el) el.innerHTML=html;
-  }catch(e){
-    if(el) el.innerHTML=`<p>${a.summary||'Full content unavailable.'}</p>`;
-  }
+    if(el)el.innerHTML=html;
+  }catch(e){if(el)el.innerHTML=`<p>${a.summary||'Full content unavailable.'}</p>`;}
 }
 
 function goBack(){
