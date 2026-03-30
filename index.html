@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Wantok Invoice</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:#fff;color:#111;font-family:'DM Sans',sans-serif;overscroll-behavior:none;}
+.app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;background:#fff;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.view{display:none;}.view.active{display:block;}
+
+/* HEADER */
+.hdr{background:#1A7A4A;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.brand{display:flex;align-items:center;gap:12px;}
+.b-icon{width:38px;height:38px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.b-name{font-size:17px;font-weight:700;color:#fff;}
+.b-sub{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,0.65);letter-spacing:1.5px;margin-top:3px;}
+.menu-btn{width:38px;height:38px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;}
+.menu-btn span{display:block;width:16px;height:1.5px;background:#fff;border-radius:2px;}
+
+/* BOTTOM NAV */
+.bnav{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #E8E8E8;background:#fff;flex-shrink:0;}
+.nb{padding:10px 4px 8px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:#BBB;border-top:2px solid transparent;}
+.nb.active{color:#1A7A4A;border-top-color:#1A7A4A;}
+.nb svg{width:20px;height:20px;}
+.nb span{font-size:9px;font-family:'DM Mono',monospace;}
+
+/* DASHBOARD */
+.kg{display:grid;grid-template-columns:1fr;gap:1px;background:#E8E8E8;margin-bottom:1px;}
+.kg2{grid-template-columns:1fr 1fr;}
+.kc{background:#fff;padding:18px;}
+.kl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:#AAA;text-transform:uppercase;margin-bottom:5px;}
+.kv{font-size:28px;font-weight:700;color:#1A7A4A;line-height:1;}
+.kv.a{color:#D4931A;}.kv.d{color:#111;}
+.yr-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:calc(100% - 36px);margin:14px 18px 4px;background:#1A7A4A;color:#fff;border:none;padding:15px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+.sw{padding:16px 18px 0;}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.st{font-size:15px;font-weight:600;}.sc{font-family:'DM Mono',monospace;font-size:11px;color:#888;}
+.itbl{width:100%;border-collapse:collapse;}
+.itbl thead tr{border-bottom:1px solid #EEE;}
+.itbl th{text-align:left;padding:8px 6px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:#AAA;text-transform:uppercase;font-weight:400;}
+.itbl td{padding:12px 6px;border-bottom:1px solid #F5F5F5;font-size:13px;}
+.nc{font-family:'DM Mono',monospace;font-size:11px;color:#D4931A;}
+.cn{font-weight:600;margin-bottom:2px;}.cd{font-size:11px;color:#888;}
+.dc{font-size:11px;color:#888;white-space:nowrap;}
+.ac{font-weight:600;color:#1A7A4A;text-align:right;}
+.empty{padding:60px 20px;text-align:center;}
+.ei{font-size:44px;margin-bottom:16px;opacity:0.2;}
+.empty p{font-family:'DM Mono',monospace;font-size:12px;color:#AAA;line-height:1.8;}
+.pb{padding-bottom:20px;}
+
+/* FORM */
+.fhero{background:linear-gradient(135deg,#1A7A4A 0%,#22A060 100%);padding:22px 18px 20px;}
+.fhero h2{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px;}
+.fhero p{font-size:13px;color:rgba(255,255,255,0.6);}
+.fbody{padding:20px 18px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:#888;text-transform:uppercase;margin-bottom:7px;}
+.field input,.field textarea{width:100%;background:#F7F7F7;border:1px solid #E0E0E0;color:#111;font-family:'DM Sans',sans-serif;font-size:15px;padding:13px 14px;border-radius:10px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+.field input:focus,.field textarea:focus{border-color:#1A7A4A;background:#fff;}
+.field textarea{resize:none;min-height:80px;line-height:1.5;}
+.stpr{display:flex;align-items:center;background:#F7F7F7;border:1px solid #E0E0E0;border-radius:10px;overflow:hidden;}
+.sb{width:52px;height:52px;background:none;border:none;color:#888;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sb:active{background:#EEE;}
+.si{flex:1;text-align:center;background:none;border:none;color:#111;font-size:20px;font-weight:600;font-family:'DM Mono',monospace;outline:none;padding:0;}
+.sh2{font-family:'DM Mono',monospace;font-size:10px;color:#AAA;margin-top:5px;padding-left:2px;}
+.gbox{background:#F0FAF5;border:1px solid #B8E0CA;border-radius:10px;overflow:hidden;margin-bottom:20px;}
+.gr{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #D8F0E4;}
+.gr:last-child{border-bottom:none;}
+.gl{font-family:'DM Mono',monospace;font-size:12px;color:#D4931A;}
+.gl.tl{color:#111;font-weight:700;font-size:14px;}
+.gv{font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:#D4931A;}
+.gv.tv{color:#111;font-size:20px;}
+.btn-gen{display:block;width:100%;background:#1A7A4A;color:#fff;border:none;padding:18px;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:700;cursor:pointer;margin-bottom:12px;}
+.btn-dis{display:block;width:100%;background:#fff;color:#888;border:1px solid #E0E0E0;padding:14px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;cursor:pointer;margin-bottom:28px;}
+.csel-bar{background:#F0FAF5;border:1px solid #B8E0CA;border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:18px;}
+.csel-name{font-size:14px;font-weight:600;color:#1A7A4A;}
+.csel-tin{font-family:'DM Mono',monospace;font-size:10px;color:#888;margin-top:2px;}
+.csel-arr{font-size:18px;color:#1A7A4A;}
+
+/* CONTRACTORS */
+.cs-hero{background:linear-gradient(135deg,#1A7A4A 0%,#22A060 100%);padding:20px 18px 18px;}
+.cs-hero h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:3px;}
+.cs-hero p{font-size:13px;color:rgba(255,255,255,0.65);}
+.cs-body{padding:16px 18px;}
+.ccard{background:#fff;border:1px solid #E8E8E8;border-radius:12px;overflow:hidden;margin-bottom:10px;}
+.ccard.sel{border-color:#1A7A4A;}
+.cch{background:#F7F7F7;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #E8E8E8;}
+.cch-name{font-size:13px;font-weight:600;color:#111;}
+.cch-tin{font-family:'DM Mono',monospace;font-size:10px;color:#D4931A;}
+.ccb{padding:10px 16px 4px;}
+.ccd{font-size:12px;color:#555;margin-bottom:4px;}
+.cca{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 14px;}
+.btn-sel{background:#1A7A4A;color:#fff;border:none;padding:10px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+.btn-del{background:#fff;color:#C0392B;border:1px solid #F0D0D0;padding:10px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;}
+.btn-add{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#fff;color:#1A7A4A;border:2px dashed #B8E0CA;padding:14px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:10px;}
+.back-btn{display:flex;align-items:center;gap:8px;background:none;border:none;color:#1A7A4A;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;padding:0 0 14px 0;}
+
+/* SETTINGS */
+.sbody{padding:20px 18px;}
+.stitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:#AAA;text-transform:uppercase;margin-bottom:10px;margin-top:20px;}
+.stitle:first-child{margin-top:0;}
+.scard{background:#fff;border:1px solid #E8E8E8;border-radius:12px;overflow:hidden;margin-bottom:4px;}
+.srow{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid #F0F0F0;gap:12px;}
+.srow:last-child{border-bottom:none;}
+.srow.tap{cursor:pointer;}.srow.tap:active{background:#F9F9F9;}
+.sico{font-size:18px;flex-shrink:0;}
+.slb{flex:1;}
+.slbl{font-size:13px;font-weight:500;color:#111;}
+.sinp{display:block;width:100%;background:none;border:none;color:#111;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-top:3px;}
+.ssub{font-family:'DM Mono',monospace;font-size:11px;color:#AAA;margin-top:2px;}
+
+/* MODAL - INVOICE */
+.modal{display:none;position:fixed;inset:0;background:#fff;z-index:300;overflow-y:auto;}
+.modal.open{display:block;}
+.mhdr{background:#1A7A4A;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:301;}
+.mtitle{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;color:#fff;text-transform:uppercase;}
+.mclose{width:34px;height:34px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:8px;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.macts{padding:12px 16px 32px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn-prt{background:#1A7A4A;color:#fff;border:none;padding:15px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-cpy{background:#fff;color:#111;border:1px solid #E0E0E0;padding:15px;border-radius:12px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+
+/* INVOICE DOC */
+.idoc{background:#fff;margin:16px;padding:22px 18px;border:1px solid #E8E8E8;}
+.id-brand{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;letter-spacing:2px;color:#111;}
+.id-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:#AAA;text-transform:uppercase;margin-top:2px;}
+.id-title{font-size:20px;font-weight:700;color:#1A7A4A;letter-spacing:1px;text-transform:uppercase;margin:12px 0 4px;}
+.id-ref{font-family:'DM Mono',monospace;font-size:13px;color:#333;margin-top:3px;}
+.id-date{font-family:'DM Mono',monospace;font-size:10px;color:#AAA;margin-top:2px;text-transform:uppercase;}
+.id-div{height:2px;background:#1A7A4A;margin:12px 0;}
+.id-pts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.pl{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:#1A7A4A;text-transform:uppercase;margin-bottom:5px;font-weight:600;}
+.pn{font-size:13px;font-weight:700;color:#111;}
+.pd{font-family:'DM Mono',monospace;font-size:10px;color:#555;line-height:1.7;margin-top:2px;}
+.pt{display:inline-block;background:#111;color:#D4931A;font-family:'DM Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;letter-spacing:1px;margin-top:5px;}
+.idt{width:100%;border-collapse:collapse;margin-bottom:4px;}
+.idt thead tr{background:#111;}
+.idt th{padding:8px 10px;text-align:left;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:#fff;text-transform:uppercase;}
+.idt th:last-child{text-align:right;}
+.idt td{padding:9px 10px;border-bottom:1px solid #EEE;font-size:12px;color:#222;}
+.idt td:last-child{text-align:right;font-family:'DM Mono',monospace;}
+.idt tr.dr td{font-style:italic;color:#555;border-bottom:none;padding-bottom:4px;}
+.idt tr.sr td{font-family:'DM Mono',monospace;font-size:10px;color:#777;text-transform:uppercase;letter-spacing:0.5px;padding-top:4px;}
+.igw{border-top:1px solid #EEE;}
+.igr{display:flex;justify-content:space-between;padding:7px 10px;}
+.igl{font-family:'DM Mono',monospace;font-size:11px;color:#D4931A;}
+.igv{font-family:'DM Mono',monospace;font-size:12px;color:#D4931A;}
+.itr{display:flex;justify-content:space-between;align-items:baseline;padding:10px 10px 8px;border-top:2px solid #111;margin-top:4px;}
+.itl{font-size:12px;font-weight:700;color:#111;text-transform:uppercase;}
+.itv{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:#1A7A4A;}
+.ipb{background:#F5F5F5;border-left:3px solid #1A7A4A;padding:10px 12px;margin:12px 0 8px;}
+.ipt{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:#1A7A4A;text-transform:uppercase;font-weight:600;margin-bottom:5px;}
+.ipx{font-family:'DM Mono',monospace;font-size:11px;color:#444;line-height:1.7;}
+.ipx strong{color:#1A7A4A;}
+.idc{font-family:'DM Mono',monospace;font-size:9px;color:#BBB;line-height:1.6;}
+
+/* ADD CONTRACTOR MODAL */
+.acm{display:none;position:fixed;inset:0;background:#fff;z-index:400;overflow-y:auto;}
+.acm.open{display:block;}
+.ach{background:#1A7A4A;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;}
+.act{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;color:#fff;text-transform:uppercase;}
+.acx{width:34px;height:34px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:8px;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.acb{padding:20px 18px;}
+.btn-sav{display:block;width:100%;background:#1A7A4A;color:#fff;border:none;padding:16px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px;}
+
+/* PAID / PENDING BADGES */
+.badge{display:inline-block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:20px;text-transform:uppercase;font-weight:600;vertical-align:middle;}
+.badge-paid{background:#E6F7EF;color:#1A7A4A;border:1px solid #B8E0CA;}
+.badge-pend{background:#FFF8E8;color:#D4931A;border:1px solid #F0D080;}
+.paid-stamp{background:#E6F7EF;border:1.5px solid #1A7A4A;border-radius:10px;padding:10px 14px;margin:0 16px 12px;display:flex;align-items:center;justify-content:space-between;}
+.paid-stamp-lbl{font-family:'DM Mono',monospace;font-size:11px;color:#1A7A4A;font-weight:600;}
+.paid-stamp-dt{font-family:'DM Mono',monospace;font-size:10px;color:#888;}
+.btn-paid{background:#E6F7EF;color:#1A7A4A;border:1.5px solid #1A7A4A;padding:15px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-unpaid{background:#FFF8E8;color:#D4931A;border:1.5px solid #D4931A;padding:15px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+.macts-3{padding:12px 16px 32px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.macts-3 .btn-paid,.macts-3 .btn-unpaid{grid-column:1/-1;}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(60px);background:#1A7A4A;color:#fff;font-family:'DM Mono',monospace;font-size:12px;padding:10px 20px;border-radius:20px;z-index:999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="brand">
+      <div class="b-icon">🧾</div>
+      <div><div class="b-name">Wantok Invoice</div><div class="b-sub">PNG · IRC · 2026</div></div>
+    </div>
+    <div class="menu-btn" onclick="go('settings')"><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content" id="content">
+
+    <!-- DASHBOARD -->
+    <div class="view" id="vDash">
+      <div class="kg"><div class="kc"><div class="kl">Total Revenue</div><div class="kv" id="dRev">K 0.00</div></div></div>
+      <div class="kg kg2">
+        <div class="kc"><div class="kl">Pending</div><div class="kv a" id="dPend">0</div></div>
+        <div class="kc"><div class="kl">Paid</div><div class="kv" id="dPaid">0</div></div>
+      </div>
+      <div class="kg kg2">
+        <div class="kc"><div class="kl">GST Collected</div><div class="kv d" id="dGst">K 0.00</div></div>
+        <div class="kc"><div class="kl">SBT Est. (2%)</div><div class="kv a" id="dSbt">K 0.00</div></div>
+      </div>
+      <button class="yr-btn" onclick="yearEnd()">📊 Year-End Tax Summary</button>
+      <div class="sw">
+        <div class="sh"><span class="st">Recent Invoices</span><span class="sc" id="dCnt">0 total</span></div>
+        <div id="dList"><div class="empty"><div class="ei">📋</div><p>No invoices yet.<br>Tap the pen icon to<br>create your first one.</p></div></div>
+      </div>
+      <div class="pb"></div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div class="view" id="vClients">
+      <div class="sw"><div class="sh" style="margin-top:20px;"><span class="st">Clients</span><span class="sc" id="cCnt">0 total</span></div>
+      <div id="cList"><div class="empty"><div class="ei">👥</div><p>Clients appear here<br>after your first invoice.</p></div></div></div>
+      <div class="pb"></div>
+    </div>
+
+    <!-- NEW INVOICE -->
+    <div class="view active" id="vNew">
+      <div class="fhero"><h2>NEW INVOICE</h2><p>Manual entry for professional PNG billing</p></div>
+      <div class="fbody">
+
+        <div style="margin-bottom:4px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:#888;text-transform:uppercase;">Issuing Contractor</div>
+        <div class="csel-bar" onclick="go('contractors')">
+          <div>
+            <div class="csel-name" id="selName">Tap to select contractor</div>
+            <div class="csel-tin" id="selTin">No contractor selected</div>
+          </div>
+          <div class="csel-arr">›</div>
+        </div>
+
+        <div class="field"><label>Client Name</label><input type="text" id="fCN" placeholder="e.g. Digicel PNG Ltd" autocomplete="off"></div>
+        <div class="field">
+          <label>Invoice Date — defaults to today, change if backdating</label>
+          <input type="date" id="invDate" onchange="refreshSelBar();refreshNum();" style="width:100%;background:#F7F7F7;border:1px solid #E0E0E0;color:#111;font-family:'DM Sans',sans-serif;font-size:15px;padding:13px 14px;border-radius:10px;outline:none;-webkit-appearance:none;">
+        </div>
+        <div class="field"><label>Client TIN</label><input type="text" id="fCT" placeholder="e.g. 123456789" inputmode="numeric" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)"></div>
+        <div class="field"><label>Client Phone</label><input type="tel" id="fCP" placeholder="e.g. 7123 4567" inputmode="numeric"></div>
+        <div class="field"><label>Client Email (Optional)</label><input type="email" id="fCE" placeholder="e.g. accounts@company.com.pg"></div>
+
+        <div class="field">
+          <label>Purchase Order (PO) Number — Government / Company Jobs</label>
+          <input type="text" id="fPO" placeholder="e.g. 7–10 digit IFMS code — leave blank if none" inputmode="numeric">
+          <div class="sh2">Required by all government departments — use the IFMS numeric code</div>
+        </div>
+
+        <div class="field">
+          <label>APC Reference — Authority to Pre-Commit (Optional)</label>
+          <input type="text" id="fAPC" placeholder="e.g. APC-2026-00456 — leave blank if none">
+          <div class="sh2">Proves funds are allocated — required for many government contracts</div>
+        </div>
+
+        <div class="field"><label>Client Address</label><input type="text" id="fCA" placeholder="e.g. Main Hwy, Goroka, EHP — required for Tax Invoice"></div>
+
+        <div class="field">
+          <label>Payment Type</label>
+          <select id="fPT" style="width:100%;background:#F7F7F7;border:1px solid #E0E0E0;color:#111;font-family:'DM Sans',sans-serif;font-size:15px;padding:13px 14px;border-radius:10px;outline:none;-webkit-appearance:none;">
+            <option value="single">Single / Full Payment</option>
+            <option value="progress1">Progress Claim 1</option>
+            <option value="progress2">Progress Claim 2</option>
+            <option value="progress3">Progress Claim 3</option>
+            <option value="progress4">Progress Claim 4</option>
+            <option value="final">Final Payment</option>
+            <option value="deposit">Deposit / Advance</option>
+          </select>
+          <div class="sh2">For staged jobs — label each progress payment clearly</div>
+        </div>
+
+        <div class="field">
+          <label>GST Registration</label>
+          <div style="display:flex;gap:10px;">
+            <div id="gstYes" onclick="setGst(true)" style="flex:1;background:#F0FAF5;border:1.5px solid #1A7A4A;border-radius:10px;padding:12px;text-align:center;cursor:pointer;">
+              <div style="font-size:13px;font-weight:700;color:#1A7A4A;">✓ GST Registered</div>
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:#888;margin-top:3px;">TAX INVOICE + 10% GST</div>
+            </div>
+            <div id="gstNo" onclick="setGst(false)" style="flex:1;background:#F7F7F7;border:1.5px solid #E0E0E0;border-radius:10px;padding:12px;text-align:center;cursor:pointer;">
+              <div style="font-size:13px;font-weight:700;color:#888;">✗ Not GST Registered</div>
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:#AAA;margin-top:3px;">Standard Invoice, no GST</div>
+            </div>
+          </div>
+          <div class="sh2">Only charge GST if the contractor is registered with the IRC for GST</div>
+        </div>
+
+        <div class="field"><label>Service Description</label><textarea id="fD" placeholder="Detailed description of services provided..."></textarea></div>
+
+        <div class="field">
+          <label>Materials (PGK) — Optional</label>
+          <div class="stpr">
+            <button class="sb" onclick="stepM(-50)">−</button>
+            <input class="si" type="number" id="fM" value="" placeholder="0" inputmode="decimal" oninput="calc()">
+            <button class="sb" onclick="stepM(50)">+</button>
+          </div>
+          <div class="sh2">Leave blank if no materials purchased</div>
+        </div>
+
+        <div class="field">
+          <label>Labour (PGK) — Required</label>
+          <div class="stpr">
+            <button class="sb" onclick="stepL(-50)">−</button>
+            <input class="si" type="number" id="fL" value="" placeholder="0" inputmode="decimal" oninput="calc()">
+            <button class="sb" onclick="stepL(50)">+</button>
+          </div>
+          <div class="sh2">Cost of work and time charged</div>
+        </div>
+
+        <div class="gbox">
+          <div class="gr"><span class="gl">Materials</span><span class="gv" id="gM">K 0.00</span></div>
+          <div class="gr"><span class="gl">Labour</span><span class="gv" id="gL">K 0.00</span></div>
+          <div class="gr" id="gstRow"><span class="gl">GST (10%)</span><span class="gv" id="gG">K 0.00</span></div>
+          <div class="gr"><span class="gl tl">TOTAL</span><span class="gv tv" id="gT">K 0.00</span></div>
+        </div>
+
+        <button class="btn-gen" onclick="genInv()">Generate Invoice</button>
+        <button class="btn-dis" onclick="discard()">Discard</button>
+      </div>
+    </div>
+
+    <!-- CONTRACTORS -->
+    <div class="view" id="vContractors">
+      <div class="cs-hero"><h2>Contractors</h2><p>Select who is issuing this invoice</p></div>
+      <div class="cs-body">
+        <button class="back-btn" onclick="go('new')">← Back to Invoice</button>
+        <div id="ctList"></div>
+        <button class="btn-add" onclick="openAC()">＋ Add New Contractor</button>
+      </div>
+      <div class="pb"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="vSettings">
+      <div class="sbody">
+        <button class="back-btn" onclick="go('new')">← Back to Invoice</button>
+        <div class="stitle">Contractor Profile (Your Operator Details)</div>
+        <div class="scard">
+          <div class="srow"><span class="sico">👤</span><div class="slb"><div class="slbl">Full Name</div><input class="sinp" type="text" id="pN" placeholder="Your legal name"></div></div>
+          <div class="srow"><span class="sico">🏢</span><div class="slb"><div class="slbl">Business Name</div><input class="sinp" type="text" id="pB" placeholder="e.g. Wantok Systems Limited"></div></div>
+          <div class="srow"><span class="sico">🔢</span><div class="slb"><div class="slbl">Your TIN Number</div><input class="sinp" type="text" id="pT" placeholder="9-digit IRC TIN" inputmode="numeric" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)"></div></div>
+          <div class="srow"><span class="sico">📞</span><div class="slb"><div class="slbl">Your Phone</div><input class="sinp" type="tel" id="pP" placeholder="e.g. 7123 4567"></div></div>
+          <div class="srow"><span class="sico">✉️</span><div class="slb"><div class="slbl">Your Email (Optional)</div><input class="sinp" type="email" id="pE" placeholder="e.g. you@email.com"></div></div>
+          <div class="srow"><span class="sico">🏦</span><div class="slb"><div class="slbl">Bank Name</div><input class="sinp" type="text" id="pBnk" placeholder="e.g. BSP, Kina Bank, ANZ"></div></div>
+          <div class="srow"><span class="sico">🔑</span><div class="slb"><div class="slbl">Account Name</div><input class="sinp" type="text" id="pAcN" placeholder="e.g. John Wapi"></div></div>
+          <div class="srow"><span class="sico">💳</span><div class="slb"><div class="slbl">Account Number</div><input class="sinp" type="text" id="pAcNo" placeholder="e.g. 1000123456" inputmode="numeric"></div></div>
+          <div class="srow"><span class="sico">📍</span><div class="slb"><div class="slbl">Branch</div><input class="sinp" type="text" id="pBrn" placeholder="e.g. Wewak Branch"></div></div>
+        </div>
+        <div class="stitle">Invoice Settings</div>
+        <div class="scard">
+          <div class="srow"><span class="sico">🔢</span><div class="slb"><div class="slbl">Next Invoice Number</div><div class="ssub" id="nextN">WI-2026-0001</div></div></div>
+          <div class="srow"><span class="sico">📊</span><div class="slb"><div class="slbl">Total Invoices</div><div class="ssub" id="totC">0</div></div></div>
+        </div>
+        <div class="stitle">Actions</div>
+        <div class="scard">
+          <div class="srow tap" onclick="savePro()"><span class="sico">💾</span><div class="slb"><div class="slbl">Save Profile</div><div class="ssub">Saves your operator details</div></div></div>
+          <div class="srow tap" onclick="exportAll()"><span class="sico">📦</span><div class="slb"><div class="slbl">Export All Invoices</div><div class="ssub">Downloads master backup of every invoice</div></div></div>
+        </div>
+        <div class="stitle">Danger Zone</div>
+        <div class="scard">
+          <div class="srow tap" onclick="resetAll()" style="border-left:3px solid #C0392B;">
+            <span class="sico">🗑️</span>
+            <div class="slb"><div class="slbl" style="color:#C0392B;">Reset All Data</div><div class="ssub">Wipes all invoices, contractors and settings</div></div>
+          </div>
+        </div>
+        <div class="pb"></div>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="bnav">
+    <button class="nb" id="nbD" onclick="go('dash')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="nb" id="nbC" onclick="go('clients')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Clients</span>
+    </button>
+    <button class="nb active" id="nbN" onclick="go('new')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span>New</span>
+    </button>
+    <button class="nb" id="nbO" onclick="go('dash')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      <span>Offers</span>
+    </button>
+    <button class="nb" id="nbS" onclick="go('settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+</div><!-- end app -->
+
+<!-- INVOICE MODAL -->
+<div class="modal" id="invModal">
+  <div class="mhdr"><span class="mtitle">Invoice Preview</span><button class="mclose" onclick="closeInv()">✕</button></div>
+  <div id="invDoc"></div>
+  <div id="paidStampWrap"></div>
+  <div class="macts-3">
+    <button class="btn-prt" onclick="printInv()">🖨 Print / Share</button>
+    <button class="btn-cpy" onclick="copyInv()">Copy Text</button>
+    <button class="btn-paid" id="btnPaid" onclick="togglePaid()">✓ Mark as Paid</button>
+  </div>
+</div>
+
+<!-- ADD CONTRACTOR MODAL -->
+<div class="acm" id="acModal">
+  <div class="ach"><span class="act">Add Contractor</span><button class="acx" onclick="closeAC()">✕</button></div>
+  <div class="acb">
+    <div class="field"><label>Full Name</label><input type="text" id="acN" placeholder="e.g. John Wapi"></div>
+    <div class="field"><label>Business Name (Optional)</label><input type="text" id="acB" placeholder="e.g. Wapi Electrical Services"></div>
+    <div class="field"><label>TIN Number</label><input type="text" id="acT" placeholder="9-digit IRC TIN" inputmode="numeric" maxlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,9)"></div>
+    <div class="field"><label>Phone</label><input type="tel" id="acP" placeholder="e.g. 7123 4567" inputmode="numeric"></div>
+    <div class="field"><label>Email (Optional)</label><input type="email" id="acE" placeholder="e.g. john@email.com"></div>
+    <div class="field"><label>Bank Name</label><input type="text" id="acBnk" placeholder="e.g. BSP, Kina Bank, ANZ"></div>
+    <div class="field"><label>Account Name</label><input type="text" id="acAcN" placeholder="e.g. John Wapi"></div>
+    <div class="field"><label>Account Number</label><input type="text" id="acAcNo" placeholder="e.g. 1000123456" inputmode="numeric"></div>
+    <div class="field"><label>Branch</label><input type="text" id="acBrn" placeholder="e.g. Wewak Branch"></div>
+    <div class="field"><label>BSB Code (Optional)</label><input type="text" id="acBSB" placeholder="e.g. 088002 — 6-digit code for bank transfers" inputmode="numeric" maxlength="6"></div>
+    <div class="field"><label>Business Address</label><input type="text" id="acAddr" placeholder="e.g. Section 5, Lot 3, Wewak, ESP — required for Tax Invoice"></div>
+    <div class="field">
+      <label>GST Registered with IRC?</label>
+      <select id="acGst" style="width:100%;background:#F7F7F7;border:1px solid #E0E0E0;color:#111;font-family:'DM Sans',sans-serif;font-size:15px;padding:13px 14px;border-radius:10px;outline:none;-webkit-appearance:none;">
+        <option value="yes">Yes — GST Registered (issues TAX INVOICE + 10% GST)</option>
+        <option value="no">No — Not GST Registered (issues Standard Invoice)</option>
+      </select>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#888;margin-top:5px;">This determines invoice type and whether GST is charged</div>
+    </div>
+    <button class="btn-sav" onclick="saveAC()">Save Contractor</button>
+  </div>
+</div>
+
+<iframe id="pf" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;border:none;"></iframe>
+<div class="toast" id="toast"></div>
+
+<script>
+// STATE
+var invs  = JSON.parse(localStorage.getItem('wi_inv')  || '[]');
+var ctrs  = JSON.parse(localStorage.getItem('wi_ctrs') || '[]');
+var prof  = JSON.parse(localStorage.getItem('wi_prof') || '{"business":"Wantok Systems Limited"}');
+var actCt = JSON.parse(localStorage.getItem('wi_act')  || 'null');
+var draft = null;
+var gstReg = true;
+
+// INIT
+window.onload = function(){
+  loadProf();
+  setTodayDate();
+  refreshDash();
+  refreshNum();
+  refreshSelBar();
+  go('new');
+};
+
+function setTodayDate(){
+  var el = document.getElementById('invDate');
+  if(!el) return;
+  var now = new Date();
+  var y = now.getFullYear();
+  var m = String(now.getMonth()+1).padStart(2,'0');
+  var d = String(now.getDate()).padStart(2,'0');
+  el.value = y+'-'+m+'-'+d;
+}
+
+function invYr(){
+  var el = document.getElementById('invDate');
+  if(!el || !el.value) return new Date().getFullYear();
+  return parseInt(el.value.split('-')[0]);
+}
+
+function getInvDate(){
+  var el = document.getElementById('invDate');
+  if(!el || !el.value) {
+    var now = new Date();
+    return {
+      full: (now.getDate()+' '+['January','February','March','April','May','June','July','August','September','October','November','December'][now.getMonth()]+' '+now.getFullYear()).toUpperCase(),
+      short: now.getDate()+' '+['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()]+' '+now.getFullYear()
+    };
+  }
+  var parts = el.value.split('-');
+  var y=parseInt(parts[0]); var m=parseInt(parts[1])-1; var d=parseInt(parts[2]);
+  var MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var MS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return {
+    full: (d+' '+MO[m]+' '+y).toUpperCase(),
+    short: d+' '+MS[m]+' '+y
+  };
+}
+
+// NAV
+var VM = {
+  dash:        {v:'vDash',       b:'nbD'},
+  clients:     {v:'vClients',    b:'nbC'},
+  new:         {v:'vNew',        b:'nbN'},
+  contractors: {v:'vContractors',b:'nbN'},
+  settings:    {v:'vSettings',   b:'nbS'}
+};
+
+function go(n){
+  Object.values(VM).forEach(function(m){
+    document.getElementById(m.v).classList.remove('active');
+    document.getElementById(m.b).classList.remove('active');
+  });
+  var m=VM[n]; if(!m) return;
+  document.getElementById(m.v).classList.add('active');
+  document.getElementById(m.b).classList.add('active');
+  document.getElementById('content').scrollTop=0;
+  if(n==='clients')     renderClients();
+  if(n==='dash')        refreshDash();
+  if(n==='contractors') renderCtrs();
+}
+
+// NUMBERING — per contractor
+function yr(){ return new Date().getFullYear(); }
+
+function nextSeq(cid){
+  var key='wi_seq_'+cid;
+  var s=JSON.parse(localStorage.getItem(key)||'{}');
+  if(s.year!==yr()) return 1;
+  return (s.seq||0)+1;
+}
+
+function bumpSeq(cid){
+  var key='wi_seq_'+cid;
+  var seq=nextSeq(cid);
+  localStorage.setItem(key,JSON.stringify({year:yr(),seq:seq}));
+  refreshNum();
+}
+
+function mkNum(s, ctr){
+  var ini = '';
+  if(ctr && ctr.name){
+    var parts = ctr.name.trim().split(/\s+/);
+    if(parts.length >= 3){
+      ini = parts[0].charAt(0).toUpperCase() + parts[1].charAt(0).toUpperCase() + parts[2].charAt(0).toUpperCase();
+    } else if(parts.length === 2){
+      ini = parts[0].charAt(0).toUpperCase() + parts[1].charAt(0).toUpperCase();
+    } else {
+      ini = parts[0].substring(0,2).toUpperCase();
+    }
+  }
+  var iy = invYr ? invYr() : yr();
+  var prefix = ini ? 'WI-'+ini : 'WI';
+  return prefix+'-'+iy+'-'+String(s).padStart(4,'0');
+}
+
+function refreshNum(){
+  var e=document.getElementById('nextN');
+  if(e){
+    if(actCt){ e.textContent=mkNum(nextSeq(actCt.id), actCt); }
+    else { e.textContent='Select a contractor first'; }
+  }
+  var t=document.getElementById('totC'); if(t) t.textContent=invs.length;
+}
+
+// FORMATTERS
+function kf(n){ return 'K '+((n||0).toLocaleString('en-PG',{minimumFractionDigits:2,maximumFractionDigits:2})); }
+function kx(n){ return 'K '+((n||0).toFixed(2)); }
+
+// GST TOGGLE
+function setGst(reg){
+  gstReg=reg;
+  var yes=document.getElementById('gstYes');
+  var no=document.getElementById('gstNo');
+  var row=document.getElementById('gstRow');
+  if(reg){
+    yes.style.background='#F0FAF5'; yes.style.borderColor='#1A7A4A';
+    yes.querySelector('div').style.color='#1A7A4A';
+    no.style.background='#F7F7F7'; no.style.borderColor='#E0E0E0';
+    no.querySelector('div').style.color='#888';
+    if(row) row.style.display='flex';
+  } else {
+    no.style.background='#FFF8E8'; no.style.borderColor='#D4931A';
+    no.querySelector('div').style.color='#D4931A';
+    yes.style.background='#F7F7F7'; yes.style.borderColor='#E0E0E0';
+    yes.querySelector('div').style.color='#888';
+    if(row) row.style.display='none';
+  }
+  calc();
+}
+
+// CALC
+function calc(){
+  var m=parseFloat(document.getElementById('fM').value)||0;
+  var l=parseFloat(document.getElementById('fL').value)||0;
+  var b=m+l;
+  var g=gstReg ? b*0.1 : 0;
+  document.getElementById('gM').textContent=kf(m);
+  document.getElementById('gL').textContent=kf(l);
+  document.getElementById('gG').textContent=kf(g);
+  document.getElementById('gT').textContent=kf(b+g);
+}
+function stepM(d){ var e=document.getElementById('fM'); var n=Math.max(0,(parseFloat(e.value)||0)+d); e.value=n===0?'':n; calc(); }
+function stepL(d){ var e=document.getElementById('fL'); var n=Math.max(0,(parseFloat(e.value)||0)+d); e.value=n===0?'':n; calc(); }
+
+// CONTRACTOR SELECTOR
+function refreshSelBar(){
+  var ne=document.getElementById('selName');
+  var te=document.getElementById('selTin');
+  if(!ne||!te) return;
+  if(actCt){
+    ne.textContent=actCt.name+(actCt.business?' — '+actCt.business:'');
+    ne.style.color='#1A7A4A';
+    te.textContent='TIN: '+actCt.tin+' · Next: '+mkNum(nextSeq(actCt.id), actCt);
+  } else {
+    ne.textContent='Tap to select contractor';
+    ne.style.color='#888';
+    te.textContent='No contractor selected';
+  }
+}
+
+function renderCtrs(){
+  var el=document.getElementById('ctList'); if(!el) return;
+  if(!ctrs.length){ el.innerHTML='<div class="empty"><div class="ei">👷</div><p>No contractors yet.<br>Add your first one below.</p></div>'; return; }
+  el.innerHTML=ctrs.map(function(c){
+    var a=actCt&&actCt.id===c.id;
+    return '<div class="ccard'+(a?' sel':'')+'">'+
+      '<div class="cch"><span class="cch-name">'+c.name+'</span><span class="cch-tin">TIN: '+c.tin+'</span></div>'+
+      '<div class="ccb">'+
+        (c.business?'<div class="ccd">🏢 '+c.business+'</div>':'')+
+        (c.phone?'<div class="ccd">📞 '+c.phone+'</div>':'')+
+        (c.email?'<div class="ccd">✉ '+c.email+'</div>':'')+
+      '</div>'+
+      '<div class="cca">'+
+        '<button class="btn-sel" onclick="selCt('+c.id+')">'+(a?'✓ Selected':'Select')+'</button>'+
+        '<button class="btn-del" onclick="delCt('+c.id+')">Remove</button>'+
+      '</div></div>';
+  }).join('');
+}
+
+function selCt(id){
+  actCt=ctrs.find(function(c){return c.id===id;});
+  localStorage.setItem('wi_act',JSON.stringify(actCt));
+  refreshSelBar(); refreshNum(); renderCtrs(); go('new');
+  toast(actCt.name+' selected — next invoice: '+mkNum(nextSeq(actCt.id), actCt));
+}
+
+function delCt(id){
+  ctrs=ctrs.filter(function(c){return c.id!==id;});
+  localStorage.setItem('wi_ctrs',JSON.stringify(ctrs));
+  if(actCt&&actCt.id===id){ actCt=null; localStorage.removeItem('wi_act'); refreshSelBar(); }
+  renderCtrs(); toast('Contractor removed');
+}
+
+function openAC(){
+  ['acN','acB','acT','acP','acE'].forEach(function(i){document.getElementById(i).value='';});
+  document.getElementById('acModal').classList.add('open');
+}
+function closeAC(){ document.getElementById('acModal').classList.remove('open'); }
+
+function saveAC(){
+  var n=document.getElementById('acN').value.trim();
+  var t=document.getElementById('acT').value.trim();
+  if(!n){toast('Enter contractor name');return;}
+  if(!t){toast('Enter contractor TIN');return;}
+  if(t.length!==9){toast('TIN must be exactly 9 digits');return;}
+  var c={id:Date.now(),name:n,business:document.getElementById('acB').value.trim(),tin:t,phone:document.getElementById('acP').value.trim(),email:document.getElementById('acE').value.trim(),bank:document.getElementById('acBnk').value.trim(),acName:document.getElementById('acAcN').value.trim(),acNo:document.getElementById('acAcNo').value.trim(),branch:document.getElementById('acBrn').value.trim(),bsb:document.getElementById('acBSB').value.trim(),address:document.getElementById('acAddr').value.trim()};
+  ctrs.unshift(c);
+  localStorage.setItem('wi_ctrs',JSON.stringify(ctrs));
+  closeAC(); selCt(c.id);
+  toast(n+' added ✓');
+}
+
+// GENERATE INVOICE
+function genInv(){
+  var cl=document.getElementById('fCN').value.trim();
+  var ct=document.getElementById('fCT').value.trim();
+  var cp=document.getElementById('fCP').value.trim();
+  var ce=document.getElementById('fCE').value.trim();
+  var po=document.getElementById('fPO').value.trim();
+  var apc=document.getElementById('fAPC').value.trim();
+  var ca=document.getElementById('fCA').value.trim();
+  var pt=document.getElementById('fPT').value;
+  var d=document.getElementById('fD').value.trim();
+  var m=parseFloat(document.getElementById('fM').value)||0;
+  var l=parseFloat(document.getElementById('fL').value)||0;
+  var b=m+l;
+  var ptLabels={'single':'Single / Full Payment','progress1':'Progress Claim 1','progress2':'Progress Claim 2','progress3':'Progress Claim 3','progress4':'Progress Claim 4','final':'Final Payment','deposit':'Deposit / Advance'};
+  if(!cl){toast('Enter client name');return;}
+  if(!d){toast('Enter service description');return;}
+  if(l<=0){toast('Enter a labour amount');return;}
+  if(!actCt){toast('Tap the green bar to select a contractor first');return;}
+  if(ct&&ct.length!==9){toast('Client TIN must be exactly 9 digits');return;}
+  var seq=nextSeq(actCt.id); var num=mkNum(seq, actCt);
+  var g=gstReg ? b*0.1 : 0;
+  var tot=b+g;
+  var invD=getInvDate();
+  draft={id:Date.now(),seq:seq,num:num,ctrId:actCt.id,
+    date:invD.full,dateShort:invD.short,
+    client:cl,ct:ct,cp:cp,ce:ce,ca:ca,
+    po:po,apc:apc,
+    payType:pt,payTypeLabel:ptLabels[pt]||'Single / Full Payment',
+    gstReg:gstReg,
+    desc:d,mat:m,base:b,gst:g,total:tot,
+    ctr:Object.assign({},actCt)};
+  renderDoc(draft);
+  syncPaidBtn(draft);
+  autoBackup(draft);
+  document.getElementById('invModal').classList.add('open');
+}
+
+function discard(){
+  ['fCN','fCT','fCP','fCE','fD','fPO','fAPC','fCA'].forEach(function(i){document.getElementById(i).value='';});
+  document.getElementById('fM').value='';
+  document.getElementById('fL').value='';
+  document.getElementById('fPT').value='single';
+  setGst(true);
+  setTodayDate();
+  calc(); toast('Form cleared');
+}
+
+// AUTO BACKUP — saves plain text invoice to device on every generate
+function autoBackup(inv){
+  try {
+    var x=buildFromTo(inv);
+    var invLabel=inv.gstReg===false?'STANDARD INVOICE':'TAX INVOICE';
+    var t=invLabel+'\n'+Array(40).join('=')+'\n';
+    t+='# '+inv.num+'\n';
+    if(inv.po) t+='PO NUMBER: '+inv.po+'\n';
+    if(inv.apc) t+='APC REF:   '+inv.apc+'\n';
+    t+=inv.date+'\n\n';
+    t+='FROM (CONTRACTOR)\n'+x.fn+'\n';
+    if(x.fb) t+=x.fb+'\n';
+    if(x.faddr) t+='Address: '+x.faddr+'\n';
+    if(x.fp) t+='Phone: '+x.fp+'\n';
+    if(x.fe) t+='Email: '+x.fe+'\n';
+    t+='TIN: '+x.ft+'\n\n';
+    t+='TO (CUSTOMER)\n'+inv.client+'\n';
+    if(inv.ca) t+='Address: '+inv.ca+'\n';
+    if(inv.ct) t+='TIN: '+inv.ct+'\n';
+    if(inv.cp) t+='Phone: '+inv.cp+'\n';
+    if(inv.ce) t+='Email: '+inv.ce+'\n';
+    t+='\n'+Array(40).join('-')+'\n';
+    t+='DESCRIPTION OF WORK\n'+inv.desc+'\n\n';
+    if(inv.mat>0) t+='Materials:        K '+inv.mat.toFixed(2)+'\n';
+    t+='Labour Service:   K '+x.lab.toFixed(2)+'\n';
+    if(inv.gstReg!==false) t+='GST (10%):        K '+inv.gst.toFixed(2)+'\n';
+    t+=Array(40).join('-')+'\n';
+    t+='TOTAL AMOUNT DUE: K '+inv.total.toFixed(2)+'\n\n';
+    t+='PAYMENT TERMS\n';
+    t+='Payment due immediately upon receipt.\n';
+    t+='Reference: '+inv.num+'\n';
+    if(inv.po) t+='PO: '+inv.po+'\n';
+    if(inv.apc) t+='APC: '+inv.apc+'\n';
+    t+='TIN: '+x.ft+'\n';
+    if(x.fbank){
+      t+='\nBANK PAYMENT DETAILS\nBank: '+x.fbank+(x.fbranch?' — '+x.fbranch:'')+'\n';
+      if(x.fbsb) t+='BSB Code: '+x.fbsb+'\n';
+      if(x.facName) t+='Account Name: '+x.facName+'\n';
+      if(x.facNo) t+='Account Number: '+x.facNo+'\n';
+    }
+    t+='\nThis Tax Invoice is issued in accordance with the PNG GST Act 2003.\n';
+    t+='The client is responsible for the accuracy of all details submitted to the IRC.\n';
+    t+='\n'+Array(40).join('=')+'\n';
+    t+='Backup generated by Wantok Invoice · '+new Date().toLocaleString();
+
+    var blob = new Blob([t], {type:'text/plain;charset=utf-8'});
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href     = url;
+    a.download = inv.num+'-BACKUP.txt';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+  } catch(e){
+    // Silent fail — backup is secondary, do not interrupt main flow
+  }
+}
+
+// EXPORT ALL — master backup of every invoice
+function exportAll(){
+  if(!invs.length){ toast('No invoices to export yet'); return; }
+
+  var now = new Date();
+  var stamp = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear()+' '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  var sep = Array(50).join('=');
+  var div = Array(50).join('-');
+
+  var t = 'WANTOK INVOICE — MASTER EXPORT\n';
+  t += 'Generated: '+stamp+'\n';
+  t += 'Total Invoices: '+invs.length+'\n';
+  t += 'Operator: '+(prof.name||'')+(prof.business?' — '+prof.business:'')+'\n';
+  t += sep+'\n\n';
+
+  var totalRev=0, totalGst=0, totalMat=0;
+
+  invs.forEach(function(inv, idx){
+    var x = buildFromTo(inv);
+    totalRev += (inv.total||0);
+    totalGst += (inv.gst||0);
+    totalMat += (inv.mat||0);
+
+    t += 'INVOICE '+(idx+1)+' OF '+invs.length+'\n';
+    t += sep+'\n';
+    t += 'TAX INVOICE\n';
+    t += '# '+inv.num+'\n';
+    t += inv.date+'\n\n';
+    t += 'FROM (CONTRACTOR)\n'+x.fn+'\n';
+    if(x.fb) t += x.fb+'\n';
+    if(x.fp) t += 'Phone: '+x.fp+'\n';
+    if(x.fe) t += 'Email: '+x.fe+'\n';
+    t += 'TIN: '+x.ft+'\n\n';
+    t += 'TO (CUSTOMER)\n'+inv.client+'\n';
+    if(inv.ct) t += 'TIN: '+inv.ct+'\n';
+    if(inv.cp) t += 'Phone: '+inv.cp+'\n';
+    if(inv.ce) t += 'Email: '+inv.ce+'\n';
+    t += '\n'+div+'\n';
+    t += 'DESCRIPTION OF WORK\n'+inv.desc+'\n\n';
+    if(inv.mat>0) t += 'Materials:        K '+inv.mat.toFixed(2)+'\n';
+    t += 'Labour Service:   K '+x.lab.toFixed(2)+'\n';
+    t += 'GST (10%):        K '+inv.gst.toFixed(2)+'\n';
+    t += div+'\n';
+    t += 'TOTAL AMOUNT DUE: K '+inv.total.toFixed(2)+'\n';
+    t += '\nReference: '+inv.num+' · TIN: '+x.ft+'\n';
+    t += sep+'\n\n';
+  });
+
+  t += 'SUMMARY\n'+sep+'\n';
+  t += 'Total Invoices:   '+invs.length+'\n';
+  t += 'Total Revenue:    K '+totalRev.toFixed(2)+'\n';
+  t += 'Total GST:        K '+totalGst.toFixed(2)+'\n';
+  t += 'Total Materials:  K '+totalMat.toFixed(2)+'\n';
+  t += 'SBT Est. (2%):    K '+(invs.reduce(function(s,i){return s+(i.base||0);},0)*0.02).toFixed(2)+'\n';
+  t += sep+'\n';
+  t += 'Exported by Wantok Invoice · PNG IRC Compliant\n';
+  t += 'Export date: '+stamp+'\n';
+
+  var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()];
+  var fname = 'WantokInvoice-Export-'+now.getDate()+month+now.getFullYear()+'.txt';
+
+  try {
+    var blob = new Blob([t], {type:'text/plain;charset=utf-8'});
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href = url; a.download = fname; a.style.display='none';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+    toast(invs.length+' invoices exported — check Downloads ✓');
+  } catch(e){
+    toast('Export failed — try Copy Text on individual invoices');
+  }
+}
+
+// RENDER INVOICE
+function buildFromTo(inv){
+  var c=inv.ctr||{};
+  var fn=c.name||'(Your Name)'; var fb=c.business||''; var ft=c.tin||'(TIN)'; var fp=c.phone||''; var fe=c.email||'';
+  var fbank=c.bank||''; var facName=c.acName||''; var facNo=c.acNo||''; var fbranch=c.branch||''; var fbsb=c.bsb||''; var faddr=c.address||'';
+  var lab=(inv.base||0)-(inv.mat||0);
+  return {fn:fn,fb:fb,ft:ft,fp:fp,fe:fe,fbank:fbank,facName:facName,facNo:facNo,fbranch:fbranch,fbsb:fbsb,faddr:faddr,lab:lab};
+}
+
+function renderDoc(inv){
+  var x=buildFromTo(inv);
+  var invType=inv.gstReg===false ? 'STANDARD INVOICE' : 'TAX INVOICE';
+  var subType=inv.payTypeLabel&&inv.payTypeLabel!=='Single / Full Payment' ? inv.payTypeLabel : '';
+  document.getElementById('invDoc').innerHTML=
+    '<div class="idoc">'+
+    '<div class="id-brand">WANTOK INVOICE</div>'+
+    '<div class="id-sub">PNG · IRC Compliant · 2025/2026</div>'+
+    '<div class="id-title">'+invType+'</div>'+
+    (subType?'<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:#D4931A;margin-bottom:4px;">'+subType+'</div>':'')+
+    '<div class="id-ref"># '+inv.num+'</div>'+
+    '<div class="id-date">'+inv.date+'</div>'+
+    (inv.po?'<div style="font-family:\'DM Mono\',monospace;font-size:12px;font-weight:700;color:#111;margin-top:6px;background:#FFF8E8;border:1px solid #F0D080;border-radius:6px;padding:5px 10px;">PO #: '+inv.po+'</div>':'')+
+    (inv.apc?'<div style="font-family:\'DM Mono\',monospace;font-size:10px;color:#888;margin-top:3px;">APC REF: '+inv.apc+'</div>':'')+
+    '<div class="id-div"></div>'+
+    '<div class="id-pts">'+
+      '<div><div class="pl">From (Contractor)</div><div class="pn">'+x.fn+'</div>'+
+      (x.fb?'<div class="pd">'+x.fb+'</div>':'')+(x.faddr?'<div class="pd">&#128205; '+x.faddr+'</div>':'')+(x.fp?'<div class="pd">📞 '+x.fp+'</div>':'')+(x.fe?'<div class="pd">✉ '+x.fe+'</div>':'')+
+      '<div class="pt">TIN: '+x.ft+'</div></div>'+
+      '<div><div class="pl">To (Customer)</div><div class="pn">'+inv.client+'</div>'+
+      (inv.ca?'<div class="pd">&#128205; '+inv.ca+'</div>':'')+(inv.ct?'<div class="pd">TIN: '+inv.ct+'</div>':'')+(inv.cp?'<div class="pd">📞 '+inv.cp+'</div>':'')+(inv.ce?'<div class="pd">✉ '+inv.ce+'</div>':'')+
+      '</div>'+
+    '</div>'+
+    '<div class="id-div"></div>'+
+    '<table class="idt"><thead><tr><th>Description of Work</th><th>Amount</th></tr></thead><tbody>'+
+    '<tr class="dr"><td colspan="2">'+inv.desc+'</td></tr>'+
+    (inv.mat>0?'<tr class="sr"><td>Materials</td><td>'+kx(inv.mat)+'</td></tr>':'')+
+    '<tr class="sr"><td>Labour Service</td><td>'+kx(x.lab)+'</td></tr>'+
+    '</tbody></table>'+
+    (inv.gstReg!==false?'<div class="igw"><div class="igr"><span class="igl">GST (10%)</span><span class="igv">'+kx(inv.gst)+'</span></div></div>':'')+
+    '<div class="itr"><span class="itl">Total Amount Due</span><span class="itv">'+kx(inv.total)+'</span></div>'+
+    '<div class="ipb"><div class="ipt">Payment Terms</div><div class="ipx">Payment due immediately upon receipt. Reference <strong>'+inv.num+'</strong>.'+(inv.po?' PO: '+inv.po+'.':'')+(inv.apc?' APC: '+inv.apc+'.':'')+' TIN: '+x.ft+
+    (x.fbank?'<br><br><strong>Bank Payment Details:</strong><br>Bank: '+x.fbank+(x.fbranch?' — '+x.fbranch:'')+(x.fbsb?'<br>BSB Code: '+x.fbsb:'')+(x.facName?'<br>Account Name: '+x.facName:'')+(x.facNo?'<br>Account Number: '+x.facNo:''):'')+'</div></div>'+
+    '<div class="idc">'+(inv.gstReg===false?'This is a Standard Invoice. The contractor is not registered for GST. No GST has been charged. ':'')+'This Tax Invoice is issued in accordance with the PNG GST Act 2003. The client is responsible for the accuracy of all details submitted to the IRC.</div>'+
+    '</div>';
+}
+
+// SAVE
+function saveInv(inv){
+  if(!invs.find(function(i){return i.id===inv.id;})){
+    invs.unshift(inv);
+    localStorage.setItem('wi_inv',JSON.stringify(invs));
+    bumpSeq(inv.ctrId||'global');
+    refreshDash();
+  }
+}
+
+function closeInv(){ document.getElementById('invModal').classList.remove('open'); draft=null; syncPaidBtn(null); }
+
+// MARK AS PAID
+function togglePaid(){
+  if(!draft) return;
+  saveInv(draft);
+  var i=invs.find(function(x){return x.id===draft.id;});
+  if(!i) return;
+  i.paid=!i.paid;
+  i.paidDate=i.paid?new Date().toLocaleDateString('en-PG',{day:'numeric',month:'short',year:'numeric'}).toUpperCase():null;
+  draft=i;
+  localStorage.setItem('wi_inv',JSON.stringify(invs));
+  syncPaidBtn(i);
+  refreshDash();
+  toast(i.paid?'✓ Invoice marked as PAID':'Invoice marked as Pending');
+}
+
+function syncPaidBtn(inv){
+  var btn=document.getElementById('btnPaid');
+  var wrap=document.getElementById('paidStampWrap');
+  if(!btn||!wrap) return;
+  if(!inv){ btn.className='btn-paid'; btn.textContent='✓ Mark as Paid'; wrap.innerHTML=''; return; }
+  if(inv.paid){
+    btn.className='btn-unpaid'; btn.textContent='↩ Mark as Pending';
+    wrap.innerHTML='<div class="paid-stamp"><span class="paid-stamp-lbl">✓ PAID</span><span class="paid-stamp-dt">'+(inv.paidDate||'')+'</span></div>';
+  } else {
+    btn.className='btn-paid'; btn.textContent='✓ Mark as Paid';
+    wrap.innerHTML='';
+  }
+}
+
+// PRINT
+function buildPrintHTML(inv){
+  var x=buildFromTo(inv);
+  var css='*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Arial,sans-serif;padding:12px;background:#fff;color:#111;}'+
+    '.h{background:#1A7A4A;padding:11px 14px;margin-bottom:12px;}.hb{color:#fff;font-size:15px;font-weight:700;letter-spacing:1px;}.hs{color:rgba(255,255,255,0.7);font-size:9px;letter-spacing:1px;margin-top:2px;}'+
+    '.st{font-size:19px;font-weight:700;color:#1A7A4A;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}.rf{font-size:12px;color:#333;margin-bottom:2px;}.dt{font-size:9px;color:#AAA;text-transform:uppercase;}'+
+    '.dv{height:2px;background:#1A7A4A;margin:11px 0;}.pts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:11px;}'+
+    '.pl{font-size:7px;letter-spacing:2px;color:#1A7A4A;text-transform:uppercase;margin-bottom:4px;font-weight:700;}.pn{font-size:12px;font-weight:700;}.pd{font-size:10px;color:#555;line-height:1.5;margin-top:1px;}'+
+    '.pt{display:inline-block;background:#111;color:#D4931A;font-size:8px;padding:1px 5px;margin-top:3px;letter-spacing:1px;}'+
+    'table{width:100%;border-collapse:collapse;margin-bottom:4px;}thead tr{background:#111;}th{padding:6px 8px;text-align:left;font-size:9px;letter-spacing:1px;color:#fff;text-transform:uppercase;}th:last-child{text-align:right;}'+
+    'td{padding:7px 8px;border-bottom:1px solid #EEE;font-size:11px;color:#222;}td:last-child{text-align:right;}.dr td{font-style:italic;color:#555;border-bottom:none;}.sr td{font-size:9px;color:#777;text-transform:uppercase;letter-spacing:0.5px;}'+
+    '.gr{display:flex;justify-content:space-between;padding:5px 8px;background:#FFFBF0;}.gl{font-size:10px;color:#D4931A;}.gv{font-size:10px;color:#D4931A;font-weight:600;}'+
+    '.tr{display:flex;justify-content:space-between;align-items:baseline;padding:9px 8px;border-top:2px solid #111;margin-top:3px;}.tl{font-size:11px;font-weight:700;text-transform:uppercase;}.tv{font-size:19px;font-weight:700;color:#1A7A4A;}'+
+    '.py{background:#F5F5F5;border-left:3px solid #1A7A4A;padding:7px 10px;margin-top:9px;}.pyt{font-size:8px;letter-spacing:2px;color:#1A7A4A;text-transform:uppercase;font-weight:700;margin-bottom:3px;}.pyb{font-size:10px;color:#444;line-height:1.5;}'+
+    '.dc{font-size:8px;color:#BBB;line-height:1.5;margin-top:7px;}@page{margin:7mm;}';
+  var body='<div class="h"><div class="hb">WANTOK INVOICE</div><div class="hs">PNG · IRC COMPLIANT · 2026</div></div>'+
+    '<div class="st">'+(inv.gstReg===false?'STANDARD INVOICE':'TAX INVOICE')+'</div>'+
+    '<div class="rf"># '+inv.num+'</div>'+
+    (inv.po?'<div style="font-weight:700;font-size:11px;background:#FFF8E8;border:1px solid #F0D080;padding:3px 8px;display:inline-block;margin-top:4px;">PO #: '+inv.po+'</div>':'')+
+    (inv.apc?'<div style="font-size:9px;color:#888;margin-top:2px;">APC REF: '+inv.apc+'</div>':'')+
+    '<div class="dt">'+inv.date+'</div>'+
+    '<div class="dv"></div>'+
+    '<div class="pts">'+
+      '<div><div class="pl">From (Contractor)</div><div class="pn">'+x.fn+'</div>'+
+      (x.fb?'<div class="pd">'+x.fb+'</div>':'')+(x.faddr?'<div class="pd">Addr: '+x.faddr+'</div>':'')+(x.fp?'<div class="pd">📞 '+x.fp+'</div>':'')+(x.fe?'<div class="pd">✉ '+x.fe+'</div>':'')+
+      '<div class="pt">TIN: '+x.ft+'</div></div>'+
+      '<div><div class="pl">To (Customer)</div><div class="pn">'+inv.client+'</div>'+
+      (inv.ca?'<div class="pd">Addr: '+inv.ca+'</div>':'')+(inv.ct?'<div class="pd">TIN: '+inv.ct+'</div>':'')+(inv.cp?'<div class="pd">📞 '+inv.cp+'</div>':'')+(inv.ce?'<div class="pd">✉ '+inv.ce+'</div>':'')+
+      '</div></div>'+
+    '<div class="dv"></div>'+
+    '<table><thead><tr><th>Description of Work</th><th>Amount</th></tr></thead><tbody>'+
+    '<tr class="dr"><td colspan="2">'+inv.desc+'</td></tr>'+
+    (inv.mat>0?'<tr class="sr"><td>Materials</td><td>K '+(inv.mat).toFixed(2)+'</td></tr>':'')+
+    '<tr class="sr"><td>Labour Service</td><td>K '+x.lab.toFixed(2)+'</td></tr>'+
+    '</tbody></table>'+
+    '<div class="gr"><span class="gl">GST (10%)</span><span class="gv">K '+(inv.gst).toFixed(2)+'</span></div>'+
+    '<div class="tr"><span class="tl">Total Amount Due</span><span class="tv">K '+(inv.total).toFixed(2)+'</span></div>'+
+    '<div class="py"><div class="pyt">Payment Terms</div><div class="pyb">Payment due immediately upon receipt. Reference <b>'+inv.num+'</b>.'+(inv.po?' PO: '+inv.po+'.':'')+(inv.apc?' APC: '+inv.apc+'.':'')+' TIN: '+x.ft+
+    (x.fbank?'<br><br><b>Bank Payment Details:</b><br>Bank: '+x.fbank+(x.fbranch?' — '+x.fbranch:'')+(x.fbsb?'<br>BSB Code: '+x.fbsb:'')+(x.facName?'<br>Account Name: '+x.facName:'')+(x.facNo?'<br>Account Number: '+x.facNo:''):'')+'</div></div>'+
+    '<div class="dc">'+(inv.gstReg===false?'This is a Standard Invoice. The contractor is not registered for GST. No GST has been charged. ':'')+'This Tax Invoice is issued in accordance with the PNG GST Act 2003. The client is responsible for the accuracy of all details submitted to the IRC.</div>';
+  return {css:css,body:body};
+}
+
+function printInv(){
+  if(!draft) return;
+  saveInv(draft);
+  var p=buildPrintHTML(draft);
+  var fr=document.getElementById('pf');
+  var doc=fr.contentDocument||fr.contentWindow.document;
+  doc.open();
+  doc.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'+p.css+'</style></head><body>'+p.body+'</body></html>');
+  doc.close();
+  setTimeout(function(){ try{ fr.contentWindow.focus(); fr.contentWindow.print(); toast('In print dialog — tap Share to send via WhatsApp'); } catch(e){ toast('Use Copy Text to share via WhatsApp'); } },500);
+}
+
+function copyInv(){
+  if(!draft) return;
+  var x=buildFromTo(draft);
+  var invLabel=draft.gstReg===false?'STANDARD INVOICE':'TAX INVOICE';
+  var t=invLabel+'\n'+Array(40).join('=')+'\n';
+  t+='# '+draft.num+'\n';
+  if(draft.po) t+='PO NUMBER: '+draft.po+'\n';
+  if(draft.apc) t+='APC REF: '+draft.apc+'\n';
+  t+=draft.date+'\n\n';
+  t+='FROM (CONTRACTOR)\n'+x.fn+'\n';
+  if(x.fb) t+=x.fb+'\n';
+  if(x.faddr) t+='Address: '+x.faddr+'\n';
+  if(x.fp) t+='Phone: '+x.fp+'\n';
+  if(x.fe) t+='Email: '+x.fe+'\n';
+  t+='TIN: '+x.ft+'\n\n';
+  t+='TO (CUSTOMER)\n'+draft.client+'\n';
+  if(draft.ca) t+='Address: '+draft.ca+'\n';
+  if(draft.ct) t+='TIN: '+draft.ct+'\n';
+  if(draft.cp) t+='Phone: '+draft.cp+'\n';
+  if(draft.ce) t+='Email: '+draft.ce+'\n';
+  t+='\n'+Array(40).join('-')+'\nDESCRIPTION OF WORK\n'+draft.desc+'\n\n';
+  if(draft.mat>0) t+='Materials:        K '+draft.mat.toFixed(2)+'\n';
+  t+='Labour Service:   K '+x.lab.toFixed(2)+'\n';
+  if(draft.gstReg!==false) t+='GST (10%):        K '+draft.gst.toFixed(2)+'\n';
+  t+=Array(40).join('-')+'\nTOTAL AMOUNT DUE: K '+draft.total.toFixed(2)+'\n\n';
+  t+='PAYMENT TERMS\n';
+  t+='Payment due immediately upon receipt.\n';
+  t+='Reference: '+draft.num+'\n';
+  if(draft.po) t+='PO: '+draft.po+'\n';
+  if(draft.apc) t+='APC: '+draft.apc+'\n';
+  t+='TIN: '+x.ft+'\n';
+  if(x.fbank){
+    t+='\nBANK PAYMENT DETAILS\nBank: '+x.fbank+(x.fbranch?' — '+x.fbranch:'')+'\n';
+    if(x.fbsb) t+='BSB Code: '+x.fbsb+'\n';
+    if(x.facName) t+='Account Name: '+x.facName+'\n';
+    if(x.facNo) t+='Account Number: '+x.facNo+'\n';
+  }
+  t+='\nThis Tax Invoice is issued in accordance with the PNG GST Act 2003.';
+  navigator.clipboard.writeText(t).then(function(){ saveInv(draft); toast('Copied! Paste into WhatsApp'); }).catch(function(){ toast('Copy failed — use Print instead'); });
+}
+
+// DASHBOARD
+function refreshDash(){
+  var rev=0,gst=0,mat=0,sbt=0,pend=0,paid=0;
+  invs.forEach(function(i){ rev+=(i.total||0); gst+=(i.gst||0); mat+=(i.mat||0); sbt+=((i.base||0)*0.02); if(i.paid) paid++; else pend++; });
+  document.getElementById('dRev').textContent=kf(rev);
+  document.getElementById('dGst').textContent=kf(gst);
+  document.getElementById('dSbt').textContent=kf(sbt);
+  document.getElementById('dPend').textContent=pend;
+  document.getElementById('dPaid').textContent=paid;
+  document.getElementById('dCnt').textContent=invs.length+' total';
+  var el=document.getElementById('dList');
+  if(!invs.length){ el.innerHTML='<div class="empty"><div class="ei">📋</div><p>No invoices yet.<br>Tap the pen icon to<br>create your first one.</p></div>'; return; }
+  var h='<table class="itbl"><thead><tr><th>Number</th><th>Client</th><th>Date</th><th style="text-align:right">Amount</th></tr></thead><tbody>';
+  invs.forEach(function(i){
+    var badge=i.paid?'<span class="badge badge-paid">Paid</span>':'<span class="badge badge-pend">Pending</span>';
+    h+='<tr onclick="reopenInv('+i.id+')" style="cursor:pointer;"><td><div class="nc">'+i.num+'</div><div style="margin-top:3px;">'+badge+'</div></td><td><div class="cn">'+i.client+'</div><div class="cd">'+(i.desc||'').substring(0,28)+((i.desc||'').length>28?'…':'')+'</div></td><td><div class="dc">'+i.dateShort+'</div></td><td><div class="ac">'+kx(i.total)+'</div></td></tr>';
+  });
+  el.innerHTML=h+'</tbody></table>';
+  refreshNum();
+}
+function reopenInv(id){ var i=invs.find(function(x){return x.id===id;}); if(!i) return; draft=i; renderDoc(i); syncPaidBtn(i); document.getElementById('invModal').classList.add('open'); }
+
+// CLIENTS
+function renderClients(){
+  var map={};
+  invs.forEach(function(i){ if(!map[i.client]) map[i.client]={name:i.client,count:0,total:0}; map[i.client].count++; map[i.client].total+=i.total; });
+  var list=Object.values(map);
+  document.getElementById('cCnt').textContent=list.length+' total';
+  var el=document.getElementById('cList');
+  if(!list.length){ el.innerHTML='<div class="empty"><div class="ei">👥</div><p>Clients appear here<br>after your first invoice.</p></div>'; return; }
+  el.innerHTML='<div class="scard">'+list.map(function(c){ return '<div class="srow"><span class="sico">🏢</span><div class="slb"><div class="slbl">'+c.name+'</div><div class="ssub">'+c.count+' invoice'+(c.count>1?'s':'')+' · '+kf(c.total)+'</div></div></div>'; }).join('')+'</div>';
+}
+
+// PROFILE
+function loadProf(){
+  if(prof.name)   document.getElementById('pN').value=prof.name;
+  document.getElementById('pB').value=prof.business||'Wantok Systems Limited';
+  if(prof.tin)    document.getElementById('pT').value=prof.tin;
+  if(prof.phone)  document.getElementById('pP').value=prof.phone;
+  if(prof.email)  document.getElementById('pE').value=prof.email;
+  if(prof.bank)   document.getElementById('pBnk').value=prof.bank;
+  if(prof.acName) document.getElementById('pAcN').value=prof.acName;
+  if(prof.acNo)   document.getElementById('pAcNo').value=prof.acNo;
+  if(prof.branch) document.getElementById('pBrn').value=prof.branch;
+}
+
+function savePro(){
+  var t=document.getElementById('pT').value.trim();
+  if(t&&t.length!==9){ toast('Your TIN must be exactly 9 digits'); return; }
+  prof={
+    name:    document.getElementById('pN').value.trim(),
+    business:document.getElementById('pB').value.trim()||'Wantok Systems Limited',
+    tin:t,
+    phone:   document.getElementById('pP').value.trim(),
+    email:   document.getElementById('pE').value.trim(),
+    bank:    document.getElementById('pBnk').value.trim(),
+    acName:  document.getElementById('pAcN').value.trim(),
+    acNo:    document.getElementById('pAcNo').value.trim(),
+    branch:  document.getElementById('pBrn').value.trim()
+  };
+  localStorage.setItem('wi_prof',JSON.stringify(prof));
+  loadProf();
+  toast('Profile saved — legally synced to device ✓');
+}
+
+// RESET
+function resetAll(){
+  var confirm1=confirm('WARNING: This will permanently delete ALL invoices, contractors and settings.\n\nThis cannot be undone. Are you absolutely sure?');
+  if(!confirm1) return;
+  var code=prompt('Type DELETE in capitals to confirm:');
+  if(code!=='DELETE'){ toast('Reset cancelled — you must type DELETE exactly'); return; }
+  localStorage.clear();
+  invs=[]; ctrs=[]; actCt=null; draft=null;
+  prof={"business":"Wantok Systems Limited"};
+  loadProf(); refreshDash(); refreshNum(); refreshSelBar(); renderCtrs();
+  go('new');
+  toast('All data wiped — fresh start ✓');
+}
+
+// YEAR END
+function yearEnd(){
+  if(!invs.length){ toast('No invoices to report yet'); return; }
+  var c=prof||{}; var y=yr();
+  var tot=0,gst=0,mat=0,lab=0,base=0;
+  invs.forEach(function(i){ tot+=(i.total||0); gst+=(i.gst||0); mat+=(i.mat||0); base+=(i.base||0); lab+=((i.base||0)-(i.mat||0)); });
+  var sbt=base*0.02; var cnt=invs.length;
+  var rows=invs.map(function(i,idx){
+    var lb=(i.base||0)-(i.mat||0);
+    var stCell=i.paid?'<td style="padding:6px 7px;font-size:9px;text-align:center;color:#1A7A4A;font-weight:700;letter-spacing:1px;">PAID</td>':'<td style="padding:6px 7px;font-size:9px;text-align:center;color:#D4931A;font-weight:700;letter-spacing:1px;">PENDING</td>';
+    return '<tr style="background:'+(idx%2===0?'#FAFAFA':'#fff')+'">'+
+      '<td style="padding:6px 7px;font-size:10px;color:#D4931A;">'+i.num+'</td>'+
+      '<td style="padding:6px 7px;font-size:11px;font-weight:600;">'+i.client+'</td>'+
+      '<td style="padding:6px 7px;font-size:10px;color:#888;">'+i.dateShort+'</td>'+
+      '<td style="padding:6px 7px;font-size:10px;text-align:right;">K '+(i.mat||0).toFixed(2)+'</td>'+
+      '<td style="padding:6px 7px;font-size:10px;text-align:right;">K '+lb.toFixed(2)+'</td>'+
+      '<td style="padding:6px 7px;font-size:10px;text-align:right;color:#D4931A;">K '+(i.gst||0).toFixed(2)+'</td>'+
+      '<td style="padding:6px 7px;font-size:11px;font-weight:700;text-align:right;color:#1A7A4A;">K '+(i.total||0).toFixed(2)+'</td>'+stCell+'</tr>';
+  }).join('');
+  var css='*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Arial,sans-serif;padding:12px;background:#fff;}'+
+    '.h{background:#1A7A4A;padding:11px 14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}.hb{color:#fff;font-size:15px;font-weight:700;}.hs{font-size:8px;color:rgba(255,255,255,0.7);letter-spacing:1px;margin-top:2px;}.yr{background:rgba(255,255,255,0.2);color:#fff;font-size:13px;font-weight:700;padding:3px 10px;border-radius:12px;}'+
+    '.cb{background:#F0FAF5;border:1px solid #B8E0CA;padding:10px 12px;margin-bottom:10px;border-radius:3px;}.cn{font-size:13px;font-weight:700;}.ct{font-size:10px;color:#1A7A4A;margin-top:2px;}'+
+    '.kg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}.kc{background:#F7F7F7;border:1px solid #E8E8E8;padding:8px 10px;border-radius:3px;}.kl{font-size:8px;letter-spacing:1.5px;color:#AAA;text-transform:uppercase;margin-bottom:3px;}.kv{font-size:14px;font-weight:700;color:#1A7A4A;}.kv.a{color:#D4931A;}.kv.d{color:#111;}'+
+    '.sb{background:#FFF8E8;border:1px solid #F0D080;padding:10px 12px;margin-bottom:10px;border-radius:3px;}.st{font-size:8px;letter-spacing:2px;color:#D4931A;text-transform:uppercase;font-weight:700;margin-bottom:5px;}.sa{font-size:20px;font-weight:700;color:#D4931A;margin-bottom:3px;}.sn{font-size:8px;color:#AAA;line-height:1.5;}'+
+    'table{width:100%;border-collapse:collapse;margin-bottom:10px;}thead tr{background:#111;}th{padding:6px 7px;text-align:left;font-size:8px;letter-spacing:1px;color:#fff;text-transform:uppercase;}th:last-child,th:nth-child(4),th:nth-child(5),th:nth-child(6){text-align:right;}'+
+    '.tf td{padding:7px;font-size:10px;font-weight:700;border-top:2px solid #111;background:#F0FAF5;}.ft{font-size:8px;color:#BBB;line-height:1.5;text-align:center;margin-top:6px;}@page{margin:7mm;}';
+  var body='<div class="h"><div><div class="hb">WANTOK INVOICE</div><div class="hs">YEAR-END TAX SUMMARY · PNG IRC</div></div><div class="yr">'+y+'</div></div>'+
+    '<div class="cb"><div class="cn">'+(c.name||'Contractor')+'</div><div class="ct">'+(c.business?c.business+' · ':'')+'TIN: '+(c.tin||'(TIN)')+'</div></div>'+
+    '<div class="kg">'+
+    '<div class="kc"><div class="kl">Invoices</div><div class="kv d">'+cnt+'</div></div>'+
+    '<div class="kc"><div class="kl">Total Revenue</div><div class="kv">K '+tot.toFixed(2)+'</div></div>'+
+    '<div class="kc"><div class="kl">GST Collected</div><div class="kv a">K '+gst.toFixed(2)+'</div></div>'+
+    '<div class="kc"><div class="kl">Materials</div><div class="kv d">K '+mat.toFixed(2)+'</div></div>'+
+    '<div class="kc"><div class="kl">Labour Income</div><div class="kv d">K '+lab.toFixed(2)+'</div></div>'+
+    '<div class="kc"><div class="kl">Net Taxable Base</div><div class="kv d">K '+base.toFixed(2)+'</div></div>'+
+    '</div>'+
+    '<div class="sb"><div class="st">Small Business Tax (SBT) Estimate — 2%</div><div class="sa">K '+sbt.toFixed(2)+'</div><div class="sn">Estimate only. Consult your accountant or IRC before filing.</div></div>'+
+    '<table><thead><tr><th>Invoice #</th><th>Client</th><th>Date</th><th>Materials</th><th>Labour</th><th>GST</th><th>Total</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody>'+
+    '<tr class="tf"><td colspan="3">TOTALS</td><td style="text-align:right">K '+mat.toFixed(2)+'</td><td style="text-align:right">K '+lab.toFixed(2)+'</td><td style="text-align:right;color:#D4931A">K '+gst.toFixed(2)+'</td><td style="text-align:right;color:#1A7A4A">K '+tot.toFixed(2)+'</td><td></td></tr>'+
+    '</table><div class="ft">Generated by Wantok Invoice · PNG IRC Compliant · '+y+'</div>';
+  var fr=document.getElementById('pf');
+  var doc=fr.contentDocument||fr.contentWindow.document;
+  doc.open();
+  doc.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>'+css+'</style></head><body>'+body+'</body></html>');
+  doc.close();
+  setTimeout(function(){ try{ fr.contentWindow.focus(); fr.contentWindow.print(); toast('Year-End Report — Print or Share'); } catch(e){ toast('Report ready'); } },500);
+}
+
+// TOAST
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); },2800);
+}
+</script>
+</body>
+</html>
